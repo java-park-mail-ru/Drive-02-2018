@@ -64,7 +64,7 @@ public class Controller {
 
     @PostMapping(value = "/user", produces = "application/json")
     public Message getUser(HttpSession session) {
-        final String currentMail = (String)session.getAttribute("mail");
+        final String currentMail = (String) session.getAttribute("mail");
 
         if (StringUtils.isEmpty(currentMail)) {
             return StatusCodes.getErrorCode("NOT_LOGINED");
@@ -80,7 +80,7 @@ public class Controller {
 
     @PostMapping(value = "/edit", produces = "application/json")
     public Message changeUser(@RequestBody User user, HttpSession session) {
-        final String currentMail = (String)session.getAttribute("mail");
+        final String currentMail = (String) session.getAttribute("mail");
 
         if (StringUtils.isEmpty(currentMail)) {
             return StatusCodes.getErrorCode("NOT_LOGINED");
@@ -104,7 +104,7 @@ public class Controller {
 
     @PostMapping(value = "/logout", produces = "application/json")
     public Message logout(HttpSession session) {
-        final String currentMail = (String)session.getAttribute("mail");
+        final String currentMail = (String) session.getAttribute("mail");
 
         if (StringUtils.isEmpty(currentMail)) {
             return StatusCodes.getErrorCode("NOT_LOGINED");
