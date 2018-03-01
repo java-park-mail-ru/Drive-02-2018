@@ -13,12 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpSession;
 
 
-// curl -H "Content-Type: application/json" -X POST -d '{"mail":"andreyBabkov@mail.ru", "login":"LoginA", "LoginA":"2131110"}' http://localhost:8080/register
-
-//curl -v --cookie "JSESSIONID=2D766834D13DF4BBD141E205AE76244C" -H "Content-Type: application/json" --data-binary @/home/andreynt/test.json http://localhost:8080/user
-
 @RestController
-public class Controller {
+public class ApiController {
 
     @PostMapping(value = "/register", produces = "application/json")
     public Message register(@RequestBody User user) {
