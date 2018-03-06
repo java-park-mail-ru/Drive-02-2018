@@ -40,7 +40,7 @@ public class Users {
         return  USERS.get(mail);
     }
 
-    public static boolean checkUsers(List<? extends User> users){
+    public static boolean checkUsers(List<? extends User> users) {
         return true;
     }
 
