@@ -40,8 +40,8 @@ public class User {
         final String currentLogin = user.getLogin();
         final String currentPassword = user.getPassword();
 
-        if (StringUtils.isEmpty(currentLogin) &&
-            StringUtils.isEmpty(currentPassword)) {
+        if (StringUtils.isEmpty(currentLogin)
+                && StringUtils.isEmpty(currentPassword)) {
             return false;
         }
 
