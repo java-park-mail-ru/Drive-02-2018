@@ -32,15 +32,15 @@ public class User {
         this.login = login;
     }
 
-    public Boolean sameMailAndPassword(User user) {
+    public boolean sameMailAndPassword(User user) {
         return user.getPassword().equals(password) && user.getMail().equals(mail);
     }
 
     public Boolean update(User user) {
 
-        String currentMail = user.getMail();
-        String currentLogin = user.getLogin();
-        String currentPassword = user.getPassword();
+        final String currentMail = user.getMail();
+        final String currentLogin = user.getLogin();
+        final String currentPassword = user.getPassword();
 
         // нечего обновлять
         if (StringUtils.isEmpty(currentMail)

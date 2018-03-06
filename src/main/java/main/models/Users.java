@@ -1,10 +1,14 @@
 package main.models;
 
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 
+@Service
 public class Users {
 
     private static final HashMap<String, User> USERS = new HashMap<String, User>() {
@@ -35,4 +39,13 @@ public class Users {
     public static User getUserByMail(String mail) {
         return  USERS.get(mail);
     }
+
+    public static boolean checkUsers(List<? extends User> users){
+        return true;
+    }
+
+    public static List<?> getUsers() {
+        return Collections.emptyList();
+    }
+
 }

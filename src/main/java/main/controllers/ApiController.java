@@ -6,6 +6,7 @@ import main.models.Users;
 import main.status.Message;
 import main.status.StatusCodes;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,10 +15,11 @@ import javax.servlet.http.HttpSession;
 
 
 @RestController
+@CrossOrigin(origins = {"https://reallyawesomeapp.herokuapp.com/", "http://localhost:8080"})
 public class ApiController {
 
     @PostMapping(value = "/register", produces = "application/json")
-    public Message register(@RequestBody User user) {
+    public Message register(@RequestBody User user, HttpSession session) {
 
         if (Users.wasUser(user)) {
             return StatusCodes.getErrorCode("USER_ALREADY_EXISTS");
@@ -25,6 +27,9 @@ public class ApiController {
 
         System.out.println("Юзера не было");
         Users.addUser(user);
+
+        session.setAttribute("mail", user.getMail());
+
         return StatusCodes.getSuccessCode("SUCCESS_NEW_USER");
     }
 
@@ -52,7 +57,6 @@ public class ApiController {
             return StatusCodes.getErrorCode("WRONG_PASSWORD");
         }
 
-        // Единственный случай успеха
         session.setAttribute("mail", mail);
         return StatusCodes.getSuccessCode("SUCCESS_SIGNIN");
     }
@@ -66,12 +70,16 @@ public class ApiController {
             return StatusCodes.getErrorCode("NOT_LOGINED");
         }
 
+        final User returnUser = Users.getUserByMail(currentMail);
+
+        if (returnUser == null) {
+            return StatusCodes.getErrorCode("INCORRECT_SESSION");
+        }
 
         final Message responseMessage = StatusCodes.getSuccessCode("SUCCESS_GET_USER");
-        responseMessage.setUser(Users.getUserByMail(currentMail));
+        responseMessage.setUser(returnUser);
         return responseMessage;
     }
-
 
 
     @PostMapping(value = "/edit", produces = "application/json")

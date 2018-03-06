@@ -13,6 +13,7 @@ public class StatusCodes {
             put("NO_SUCH_MAIL", "User with this mail doesn't exist");
             put("WRONG_PASSWORD", "Wrong password");
             put("NOT_LOGINED", "User isn't logined");
+            put("INCORRECT_SESSION", "Bad cookie");
             put("NOTHING_TO_UPDATE", "You need to change something");
         }
     };
