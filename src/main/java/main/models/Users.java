@@ -28,6 +28,10 @@ public class Users {
         USERS.put(user.getMail(), user);
     }
 
+    public static void deleteUser(User user) {
+        USERS.remove(user.getMail());
+    }
+
     public static boolean wasUser(User user) {
         return (!StringUtils.isEmpty(USERS.get(user.getMail())));
     }

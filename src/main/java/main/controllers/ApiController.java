@@ -21,15 +21,24 @@ public class ApiController {
     @PostMapping(value = "/register", produces = "application/json")
     public Message register(@RequestBody User user, HttpSession session) {
 
+        if (StringUtils.isEmpty(user.getMail())) {
+            return StatusCodes.getErrorCode("WITHOUT_MAIL");
+        }
+
+        if (StringUtils.isEmpty(user.getPassword())) {
+            return StatusCodes.getErrorCode("WITHOUT_PASSWORD");
+        }
+
+        if (StringUtils.isEmpty(user.getLogin())) {
+            return StatusCodes.getErrorCode("WITHOUT_LOGIN");
+        }
+
         if (Users.wasUser(user)) {
             return StatusCodes.getErrorCode("USER_ALREADY_EXISTS");
         }
 
-        System.out.println("Юзера не было");
         Users.addUser(user);
-
         session.setAttribute("mail", user.getMail());
-
         return StatusCodes.getSuccessCode("SUCCESS_NEW_USER");
     }
 
@@ -38,13 +47,12 @@ public class ApiController {
     public Message authorize(@RequestBody User user, HttpSession session) {
 
         final String mail = user.getMail();
-        final String password = user.getPassword();
 
         if (StringUtils.isEmpty(mail)) {
             return StatusCodes.getErrorCode("WITHOUT_MAIL");
         }
 
-        if (StringUtils.isEmpty((password))) {
+        if (StringUtils.isEmpty((user.getPassword()))) {
             return StatusCodes.getErrorCode("WITHOUT_PASSWORD");
         }
 
@@ -53,6 +61,7 @@ public class ApiController {
         }
 
         final User userToCheck = Users.getUser(user);
+
         if (!userToCheck.sameMailAndPassword(user)) {
             return StatusCodes.getErrorCode("WRONG_PASSWORD");
         }
@@ -83,22 +92,32 @@ public class ApiController {
 
 
     @PostMapping(value = "/edit", produces = "application/json")
-    public Message changeUser(@RequestBody User user, HttpSession session) {
+    public Message changeUserInfo(@RequestBody User user, HttpSession session) {
         final String currentMail = (String) session.getAttribute("mail");
 
         if (StringUtils.isEmpty(currentMail)) {
             return StatusCodes.getErrorCode("NOT_LOGINED");
         }
 
-        final User userToBeChanged = Users.getUserByMail(user.getMail());
+        User editableUser = Users.getUserByMail(currentMail);
 
-        // To do:
-        // почта - уникальный ключ, ее пока нельзя менять
-        if (userToBeChanged == null) {
+        if (editableUser == null) {
             return StatusCodes.getErrorCode("NO_SUCH_MAIL");
         }
 
-        if (!userToBeChanged.update(user)) {
+        final String newMail = user.getMail();
+
+        if (!StringUtils.isEmpty(newMail)) {
+            final User userWithNewMail = new User(newMail,
+                                                  editableUser.getLogin(),
+                                                  editableUser.getPassword());
+            Users.deleteUser(editableUser);
+            Users.addUser(userWithNewMail);
+            editableUser = userWithNewMail;
+            session.setAttribute("mail", newMail);
+        }
+
+        if (!editableUser.update(user)) {
             return StatusCodes.getErrorCode("NOTHING_TO_UPDATE");
         }
 

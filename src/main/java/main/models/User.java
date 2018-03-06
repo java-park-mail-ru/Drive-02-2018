@@ -36,25 +36,19 @@ public class User {
         return user.getPassword().equals(password) && user.getMail().equals(mail);
     }
 
-    public Boolean update(User user) {
-
-        final String currentMail = user.getMail();
+    public boolean update(User user) {
         final String currentLogin = user.getLogin();
         final String currentPassword = user.getPassword();
 
-        // нечего обновлять
-        if (StringUtils.isEmpty(currentMail)
-                && StringUtils.isEmpty(currentLogin)
-                && StringUtils.isEmpty(currentPassword)) {
+        if (StringUtils.isEmpty(currentLogin) &&
+            StringUtils.isEmpty(currentPassword)) {
             return false;
         }
 
-        if (!StringUtils.isEmpty(currentMail)) {
-            this.mail = currentMail;
-        }
         if (!StringUtils.isEmpty(currentLogin)) {
             this.login = currentLogin;
         }
+
         if (!StringUtils.isEmpty(currentPassword)) {
             this.password = currentPassword;
         }
@@ -62,7 +56,6 @@ public class User {
         return true;
     }
 
-    // Геттеры
     public Long getId() {
         return id;
     }
@@ -80,7 +73,6 @@ public class User {
     }
 
 
-    // Сеттеры
     public void setMail(String mail) {
         this.mail = mail;
     }
