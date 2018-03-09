@@ -4,14 +4,13 @@ Java course 02.2018. Project: Drive
 # API methods:
 
 
-**/register** - регистрация нового пользователя
+**/register** - регистрация нового пользователя </br>
 
-Передается POST запрос в формате:
-{
-    "mail":"example@yandex.ru", 
-    "login":"MyLogin", 
-    "password":"12345"
-}
+Передается POST запрос, содержащий json вида: <br />
+{   "mail":"example@yandex.ru", <br />
+    "login":"MyLogin", <br />
+    "password":"12345" <br />
+}<br />
     
 **/signin** - вход для пользователя
 
