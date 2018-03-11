@@ -6,10 +6,7 @@ import main.models.Users;
 import main.status.Message;
 import main.status.StatusCodes;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
@@ -17,9 +14,6 @@ import java.util.Comparator;
 
 
 @RestController
-@CrossOrigin(origins = {"https://reallyawesomeapp.herokuapp.com/",
-                        "http://localhost:8080",
-                        "https://frontend-drive.herokuapp.com/"})
 public class ApiController {
 
     @PostMapping(value = "/register", produces = "application/json")
@@ -75,7 +69,7 @@ public class ApiController {
     }
 
 
-    @PostMapping(value = "/user", produces = "application/json")
+    @GetMapping(value = "/user", produces = "application/json")
     public Message getUser(HttpSession session) {
         final String currentMail = (String) session.getAttribute("mail");
 
@@ -142,7 +136,7 @@ public class ApiController {
     }
 
 
-    @PostMapping(value = "/leaders", produces = "application/json")
+    @GetMapping(value = "/leaders", produces = "application/json")
     public Message loadLeaders() {
         User[] users = Users.getArrayOfUsers();
 

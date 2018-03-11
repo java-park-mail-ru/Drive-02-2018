@@ -12,9 +12,9 @@ public class Users {
 
     private static final HashMap<String, User> USERS = new HashMap<String, User>() {
         {
-            final User andrey = new User("andreyBabkov@mail.ru", "LoginA", "2131110", 25);
-            final User zhenya = new User("starina@mail.ru", "LoginZ", "21334*sds", 1);
-            final User masha  = new User("masha@mail.ru", "LoginM", "2133", 12);
+            final User andrey = new User("andreyBabkov@mail.ru", "LoginA", "2131110aaaa", 25);
+            final User zhenya = new User("starina@mail.ru", "LoginZ", "21334sds", 1);
+            final User masha  = new User("masha@mail.ru", "LoginM", "2133qqqqq", 12);
 
             put(andrey.getMail(), andrey);
             put(zhenya.getMail(), zhenya);
