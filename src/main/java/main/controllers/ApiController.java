@@ -153,6 +153,10 @@ public class ApiController {
             }
         });
 
+        if (users.length > 10) {
+            users = Arrays.copyOf(users, 10);
+        }
+
         final Message responseMessage = StatusCodes.getSuccessCode("SUCCESS_GET_USER");
         responseMessage.setUsers(users);
         return responseMessage;

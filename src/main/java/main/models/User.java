@@ -96,12 +96,12 @@ public class User {
         this.score = score;
     }
 
-    public static int compareThem(User a, User b) {
-        if (a.getScore() == b.getScore()) {
+    public static int compareThem(User first, User second) {
+        if (first.getScore() == second.getScore()) {
             return 0;
         }
 
-        return (a.getScore() < b.getScore()) ? 1 : -1;
+        return (first.getScore() < second.getScore()) ? 1 : -1;
     }
 
 }
