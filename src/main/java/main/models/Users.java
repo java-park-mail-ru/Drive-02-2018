@@ -3,6 +3,7 @@ package main.models;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -13,9 +14,9 @@ public class Users {
 
     private static final HashMap<String, User> USERS = new HashMap<String, User>() {
         {
-            final User andrey = new User("andreyBabkov@mail.ru", "LoginA", "2131110");
-            final User zhenya = new User("starina@mail.ru", "LoginZ", "21334*sds");
-            final User masha  = new User("masha@mail.ru", "LoginM", "2133");
+            final User andrey = new User("andreyBabkov@mail.ru", "LoginA", "2131110", 25);
+            final User zhenya = new User("starina@mail.ru", "LoginZ", "21334*sds", 1);
+            final User masha  = new User("masha@mail.ru", "LoginM", "2133", 12);
 
             put(andrey.getMail(), andrey);
             put(zhenya.getMail(), zhenya);
@@ -44,12 +45,10 @@ public class Users {
         return  USERS.get(mail);
     }
 
-    public static boolean checkUsers(List<? extends User> users) {
-        return true;
-    }
-
-    public static List<?> getUsers() {
-        return Collections.emptyList();
+    public static User[] getArrayOfUsers() {
+        final Collection<User> values = USERS.values();
+        User[] targetArray = values.toArray(new User[values.size()]);
+        return targetArray;
     }
 
 }

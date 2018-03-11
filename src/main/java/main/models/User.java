@@ -19,17 +19,21 @@ public class User {
     @JsonProperty(value = "login")
     private String login;
 
+    @JsonProperty(value = "score")
+    private int score = 0;
+
     private static final AtomicLong ID_GENERATOR = new AtomicLong(0);
 
     public User() {
         this.id = ID_GENERATOR.getAndDecrement();
     }
 
-    public User(String mail, String login, String password) {
+    public User(String mail, String login, String password, int score) {
         this.id = ID_GENERATOR.getAndDecrement();
         this.mail = mail;
         this.password = password;
         this.login = login;
+        this.score = score;
     }
 
     public boolean sameMailAndPassword(User user) {
@@ -72,6 +76,9 @@ public class User {
         return login;
     }
 
+    public int getScore() {
+        return score;
+    }
 
     public void setMail(String mail) {
         this.mail = mail;
@@ -83,5 +90,9 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

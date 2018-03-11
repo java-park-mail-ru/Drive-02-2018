@@ -16,6 +16,11 @@ public class Message {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private User user;
 
+    @JsonProperty
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private User[] users;
+
+
     Message() {
         success = "false";
         status = "undefined";
@@ -38,6 +43,10 @@ public class Message {
         return user;
     }
 
+    public User[] getUsers() {
+        return users;
+    }
+
     public void setSuccess(String success) {
         this.success = success;
     }
@@ -50,5 +59,10 @@ public class Message {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public void setUsers(User[] users) {
+        this.users = users;
+    }
+
 }
 

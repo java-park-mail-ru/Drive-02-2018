@@ -110,7 +110,7 @@ public class ApiController {
         if (!StringUtils.isEmpty(newMail)) {
             final User userWithNewMail = new User(newMail,
                                                   editableUser.getLogin(),
-                                                  editableUser.getPassword());
+                                                  editableUser.getPassword(), editableUser.getScore());
             Users.deleteUser(editableUser);
             Users.addUser(userWithNewMail);
             editableUser = userWithNewMail;
@@ -135,6 +135,17 @@ public class ApiController {
 
         session.invalidate();
         return StatusCodes.getSuccessCode("SUCCESS_LOGOUT");
+    }
+
+
+    @PostMapping(value = "/leaders", produces = "application/json")
+    public Message loadLeaders() {
+        User[] users = Users.getArrayOfUsers();
+
+        // сделать сортировку
+        final Message responseMessage = StatusCodes.getSuccessCode("SUCCESS_GET_USER");
+        responseMessage.setUsers(users);
+        return responseMessage;
     }
 
 }
