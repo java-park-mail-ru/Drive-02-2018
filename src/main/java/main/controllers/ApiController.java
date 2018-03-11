@@ -12,10 +12,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
+import java.util.Comparator;
 
 
 @RestController
-@CrossOrigin(origins = {"https://reallyawesomeapp.herokuapp.com/", "http://localhost:8080"})
+@CrossOrigin(origins = {"https://reallyawesomeapp.herokuapp.com/",
+                        "http://localhost:8080",
+                        "https://frontend-drive.herokuapp.com/"})
 public class ApiController {
 
     @PostMapping(value = "/register", produces = "application/json")
@@ -142,7 +146,13 @@ public class ApiController {
     public Message loadLeaders() {
         User[] users = Users.getArrayOfUsers();
 
-        // сделать сортировку
+        Arrays.sort(users, new Comparator<User>() {
+            @Override
+            public int compare(User o1, User o2) {
+                return User.compareThem(o1, o2);
+            }
+        });
+
         final Message responseMessage = StatusCodes.getSuccessCode("SUCCESS_GET_USER");
         responseMessage.setUsers(users);
         return responseMessage;

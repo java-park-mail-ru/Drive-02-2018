@@ -95,4 +95,13 @@ public class User {
     public void setScore(int score) {
         this.score = score;
     }
+
+    public static int compareThem(User a, User b) {
+        if (a.getScore() == b.getScore()) {
+            return 0;
+        }
+
+        return (a.getScore() < b.getScore()) ? 1 : -1;
+    }
+
 }
