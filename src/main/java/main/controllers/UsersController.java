@@ -14,7 +14,7 @@ import java.util.Comparator;
 
 
 @RestController
-public class ApiController {
+public class UsersController {
 
     @PostMapping(value = "/register", produces = "application/json")
     public Message register(@RequestBody User user, HttpSession session) {
@@ -135,24 +135,23 @@ public class ApiController {
         return StatusCodes.getSuccessCode("SUCCESS_LOGOUT");
     }
 
+    @GetMapping(value = "/leaders/{startPos:[\\d]+}/{amount:[\\d]+}", produces = "application/json")
+    public Message loadLeaders(@PathVariable int startPos, @PathVariable int amount) {
+        final User[] users = Users.getArrayOfUsers();
 
-    @GetMapping(value = "/leaders", produces = "application/json")
-    public Message loadLeaders() {
-        User[] users = Users.getArrayOfUsers();
-
-        Arrays.sort(users, new Comparator<User>() {
-            @Override
-            public int compare(User o1, User o2) {
-                return User.compareThem(o1, o2);
-            }
-        });
-
-        if (users.length > 10) {
-            users = Arrays.copyOf(users, 10);
+        if (startPos == 0) {
+            startPos = 1;
         }
 
+        if (startPos + amount - 1 > users.length) {
+            amount = users.length - startPos + 1;
+        }
+
+        Arrays.sort(users, (User o1, User o2) -> User.compareThem(o1, o2));
+        final User[] sortedPart = Arrays.copyOfRange(users, startPos - 1, startPos + amount - 1);
+
         final Message responseMessage = StatusCodes.getSuccessCode("SUCCESS_GET_USER");
-        responseMessage.setUsers(users);
+        responseMessage.setUsers(sortedPart);
         return responseMessage;
     }
 
