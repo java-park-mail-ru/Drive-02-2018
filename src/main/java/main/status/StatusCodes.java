@@ -24,6 +24,7 @@ public class StatusCodes {
             put("SUCCESS_NEW_USER", "User was successfully added");
             put("SUCCESS_SIGNIN", "You have successfully logined");
             put("SUCCESS_GET_USER", "Your user is here");
+            put("SUCCESS_GET_LEADERS", "Top players are sent");
             put("SUCCESS_LOGOUT", "Your have successfully logout");
             put("SUCCESS_UPDATE_PROFILE", "Your have successfully update your profile");
         }
@@ -31,12 +32,12 @@ public class StatusCodes {
 
     public static Message getSuccessCode(String code) {
         final String answer = SUCCESSES.get(code);
-        return new Message("true", answer);
+        return new Message(true, answer);
     }
 
     public static Message getErrorCode(String code) {
         final String answer = ERRORS.get(code);
-        return new Message("false", answer);
+        return new Message(false, answer);
     }
 
 }

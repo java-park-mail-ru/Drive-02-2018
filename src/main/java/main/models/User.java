@@ -7,7 +7,7 @@ import org.springframework.util.StringUtils;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class User {
-
+    @JsonProperty(value = "id")
     private Long id;
 
     @JsonProperty(value = "mail")
@@ -22,14 +22,14 @@ public class User {
     @JsonProperty(value = "score")
     private int score = 0;
 
-    private static final AtomicLong ID_GENERATOR = new AtomicLong(0);
+    private static final AtomicLong ID_GENERATOR = new AtomicLong(1);
 
     public User() {
-        this.id = ID_GENERATOR.getAndDecrement();
+        this.id = ID_GENERATOR.getAndIncrement();
     }
 
     public User(String mail, String login, String password, int score) {
-        this.id = ID_GENERATOR.getAndDecrement();
+        this.id = ID_GENERATOR.getAndIncrement();
         this.mail = mail;
         this.password = password;
         this.login = login;

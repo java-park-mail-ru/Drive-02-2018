@@ -7,7 +7,7 @@ import main.models.User;
 public class Message {
 
     @JsonProperty
-    private String success;
+    private boolean success;
 
     @JsonProperty
     private String status;
@@ -20,18 +20,21 @@ public class Message {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private User[] users;
 
+    @JsonProperty
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private int usersLeft;
 
     Message() {
-        success = "false";
+        success = false;
         status = "undefined";
     }
 
-    Message(String success, String status) {
+    Message(boolean success, String status) {
         this.success = success;
         this.status = status;
     }
 
-    public String getSuccess() {
+    public boolean getSuccess() {
         return success;
     }
 
@@ -43,11 +46,15 @@ public class Message {
         return user;
     }
 
+    public int gerUsersLeft() {
+        return this.usersLeft;
+    }
+
     public User[] getUsers() {
         return users;
     }
 
-    public void setSuccess(String success) {
+    public void setSuccess(boolean success) {
         this.success = success;
     }
 
@@ -62,6 +69,10 @@ public class Message {
 
     public void setUsers(User[] users) {
         this.users = users;
+    }
+
+    public void setUsersLeft(int amount) {
+        this.usersLeft = amount;
     }
 
 }
