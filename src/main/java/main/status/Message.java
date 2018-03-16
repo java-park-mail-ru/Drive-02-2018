@@ -22,7 +22,7 @@ public class Message {
 
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private int usersLeft;
+    private Integer usersLeft;
 
     Message() {
         success = false;
@@ -46,7 +46,7 @@ public class Message {
         return user;
     }
 
-    public int gerUsersLeft() {
+    public Integer getUsersLeft() {
         return this.usersLeft;
     }
 
@@ -71,7 +71,7 @@ public class Message {
         this.users = users;
     }
 
-    public void setUsersLeft(int amount) {
+    public void setUsersLeft(Integer amount) {
         this.usersLeft = amount;
     }
 

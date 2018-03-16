@@ -54,7 +54,6 @@ public class UsersController {
         }
 
         if (!Users.wasUser(user)) {
-            System.out.println("in no such mail");
             return StatusCodes.getErrorCode("NO_SUCH_MAIL");
         }
 
@@ -64,7 +63,6 @@ public class UsersController {
             return StatusCodes.getErrorCode("WRONG_PASSWORD");
         }
 
-        System.out.println("going to set cookie");
         session.setAttribute("mail", mail);
         return StatusCodes.getSuccessCode("SUCCESS_SIGNIN");
     }
@@ -124,7 +122,7 @@ public class UsersController {
     }
 
 
-    @PostMapping(value = "/logout", produces = "application/json")
+    @GetMapping(value = "/logout", produces = "application/json")
     public Message logout(HttpSession session) {
         final String currentMail = (String) session.getAttribute("mail");
 
@@ -157,6 +155,13 @@ public class UsersController {
 
         final int usersLeft = allUsersLength - startPos - sortedPart.length + 1;
         responseMessage.setUsersLeft(usersLeft);
+
+        // чтобы успевал отобразиться прелоадер
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+        }
 
         return responseMessage;
     }
