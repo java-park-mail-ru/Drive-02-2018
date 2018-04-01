@@ -28,7 +28,7 @@ public class UserService {
     public UserModel signin(UserModel user) {
         final String sql =
             "SELECT email, login, score FROM users WHERE email = ? AND password = crypt(?, password);";
-        return jdbcTemplate.queryForObject(sql, ApiRowMapper.getUser, user.getMail(), user.getPassword());
+        return jdbcTemplate.queryForObject(sql, ApiRowMapper.getUser(), user.getMail(), user.getPassword());
 
     }
 
@@ -36,7 +36,7 @@ public class UserService {
     public UserModel getUserByMail(String mail) {
         final String sql =
                 "SELECT email, login, score FROM users WHERE email = ?";
-        return jdbcTemplate.queryForObject(sql, ApiRowMapper.getUser, mail);
+        return jdbcTemplate.queryForObject(sql, ApiRowMapper.getUser(), mail);
     }
 
 
@@ -77,7 +77,7 @@ public class UserService {
 
     public UserModel[] getLeaders(int startPos, int amount) {
         final String sql = "SELECT login, score FROM users ORDER BY score DESC OFFSET ? LIMIT ?";
-        final List<UserModel> users = jdbcTemplate.query(sql, ApiRowMapper.getUserLoginAndScore, startPos, amount);
+        final List<UserModel> users = jdbcTemplate.query(sql, ApiRowMapper.getUserLoginAndScore(), startPos, amount);
         final UserModel[] arrayOfUsers = new UserModel[users.size()];
         return users.toArray(arrayOfUsers);
     }

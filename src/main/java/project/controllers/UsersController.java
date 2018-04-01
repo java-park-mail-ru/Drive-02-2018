@@ -101,8 +101,8 @@ public class UsersController {
             session.setAttribute("mail", user.getMail());
         }
 
-        return ResponseEntity.status(HttpStatus.OK).
-                body(StatusCodes.returnUser("UPDATED", returnedUser));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(StatusCodes.returnUser("UPDATED", returnedUser));
     }
 
 
