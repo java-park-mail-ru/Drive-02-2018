@@ -1,6 +1,14 @@
 language: java
 jdk:
   - oraclejdk9
-
+sudo: required
 branches:
-  - master
+  - develop
+addons:
+  postgresql: "9.6"
+  services:
+    - postgresql
+  before_script:
+    - psql -c "create user dcoker with password 'docker';" -U postgres
+    - psql -c "create database drive_db;" -U postgres
+    - psql -c "grant all on database drive_db to docker;" -U postgres
