@@ -4,11 +4,6 @@ jdk:
 sudo: required
 branches:
   - develop
-spring:
-  datasource:
-    url: ${JDBC_DATABASE_URL}
-    username: ${JDBC_DATABASE_USERNAME}
-    password: ${JDBC_DATABASE_PASSWORD}
 addons:
   postgresql: "9.6"
   services:

@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class StatusCodes {
 
-    private static final HashMap<String, String> ERRORS = new HashMap<>() {
+    private static final HashMap<String, String> ERRORS = new HashMap<String, String>() {
         {
             put("USER_EXISTS", "User already exists");
             put("ERROR", "Something goes wrong. Check your input information");
@@ -18,7 +18,7 @@ public class StatusCodes {
     };
 
 
-    private static final HashMap<String, String> SUCCESSES = new HashMap<>() {
+    private static final HashMap<String, String> SUCCESSES = new HashMap<String, String>() {
         {
             put("SUCCESS_LOGOUT", "Your have successfully logout");
             put("CREATED", "Success creation");
