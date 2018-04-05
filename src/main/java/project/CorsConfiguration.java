@@ -16,7 +16,7 @@ public class CorsConfiguration implements WebMvcConfigurer {
                 .allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "PATCH")
                 .allowedOrigins(
                         "https://reallyawesomeapp.herokuapp.com/",
-                        "http://localhost:3000",
+                        "http://localhost:3000/",
                         "https://frontend-drive.herokuapp.com"
                 );
     }
