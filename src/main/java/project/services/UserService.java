@@ -3,6 +3,7 @@ package project.services;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import project.models.UserModel;
 import project.rowmapper.ApiRowMapper;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
 @Service
 public class UserService {
 
+    //todo транзакции, чтобы бд не херить
     private JdbcTemplate jdbcTemplate;
 
 

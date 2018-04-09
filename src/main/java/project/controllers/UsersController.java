@@ -106,6 +106,7 @@ public class UsersController {
     }
 
 
+    // todo post
     @GetMapping(value = "/logout", produces = "application/json")
     public ResponseEntity logout(HttpSession session) {
         final String currentMail = (String) session.getAttribute("mail");

@@ -1,22 +1,22 @@
 package project.services;
 
-import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import project.models.UserModel;
 
 import javax.validation.constraints.NotNull;
-import static org.junit.Assert.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Transactional
 public class UserServiceTest {
     @Autowired
@@ -28,10 +28,10 @@ public class UserServiceTest {
     }
 
 
-    private void assertDifference(@NotNull UserModel expected, @NotNull UserModel actual) {
-        assertEquals("Wrong Mail", expected.getMail(), actual.getMail());
-        assertEquals("Wrong Login", expected.getLogin(), actual.getLogin());
-        assertEquals("Wrong Score", expected.getScore(), actual.getScore());
+    private static void assertDifference(@NotNull UserModel expected, @NotNull UserModel actual) {
+        assertEquals( expected.getMail(), actual.getMail(), "Wrong Mail");
+        assertEquals(expected.getLogin(), actual.getLogin(), "Wrong Login");
+        assertEquals( expected.getScore(), actual.getScore(), "Wrong Score");
     }
 
 
@@ -47,7 +47,7 @@ public class UserServiceTest {
         assertDifference(user, userFromTable);
     }
 
-    @Test(expected = DuplicateKeyException.class)
+    @Test
     @DisplayName("Register user with same mail")
     public void insertWithSameMail() {
         final UserModel user2 =
@@ -56,7 +56,7 @@ public class UserServiceTest {
         userService.create(user2);
     }
 
-    @Test(expected = DuplicateKeyException.class)
+    @Test
     @DisplayName("Register user with same login")
     public void insertWithSameLogin() {
         final UserModel user2 =
@@ -65,11 +65,11 @@ public class UserServiceTest {
         userService.create(user2);
     }
 
-    @Test(expected = DataAccessException.class)
+    @Test
     @DisplayName("Get nonexistent user")
     public void testGetEmtyUser() {
         final UserModel userFromTable= userService.getUserByMail("random_mail");
-        assertEquals("Nonexistent users exists", userFromTable, null);
+        assertNull(userFromTable);
     }
 
     @Test
@@ -80,7 +80,7 @@ public class UserServiceTest {
         assertDifference(user, returnedUser);
     }
 
-    @Test(expected = DataAccessException.class)
+    @Test
     @DisplayName("Sign in nonexistent")
     public void testSignInNonexistent() {
         final UserModel newUser = new UserModel("default", "default", 2);
@@ -89,7 +89,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("Editing user mail")
-    public void EditUserMail() {
+    public void editUserMail() {
         userService.create(user);
         final String oldMail = user.getMail();
         final String newMail = changeString(user.getMail());
@@ -99,7 +99,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("Editing user login")
-    public void EditUserLogin() {
+    public void editUserLogin() {
         userService.create(user);
         final String newLogin = changeString(user.getLogin());
         final UserModel newUser = new UserModel(user.getMail(), newLogin, user.getScore());
@@ -108,7 +108,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("Editing user login")
-    public void EditUserPassword() {
+    public void editUserPassword() {
         userService.create(user);
         final String newPassword = changeString(user.getPassword());
         final UserModel newUser = new UserModel(user.getMail(), user.getLogin(), user.getScore(), newPassword);
