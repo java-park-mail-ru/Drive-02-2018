@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
+import java.util.List;
 
 
 @RestController
@@ -136,28 +137,28 @@ public class UsersController {
         return StatusCodes.getSuccessCode("SUCCESS_LOGOUT");
     }
 
-    @GetMapping(value = "/leaders/{startPos:[\\d]+}/{amount:[\\d]+}", produces = "application/json")
-    public Message loadLeaders(@PathVariable int startPos, @PathVariable int amount) {
+
+    @GetMapping(value = "/leaders", produces = "application/json")
+    public Message loadLeaders(@RequestParam(value = "limit") int limit,
+                               @RequestParam(value = "offset") int offset) {
         final User[] users = Users.getArrayOfUsers();
         final int allUsersLength = users.length;
 
-        if (startPos == 0) {
-            startPos = 1;
-        }
-
-        if (startPos + amount - 1 > users.length) {
-            amount = users.length - startPos + 1;
+        if (offset + limit > users.length) {
+            limit = users.length - offset;
+            if (limit < 0) {
+                return StatusCodes.getErrorCode("WRONG_PARAMS");
+            }
         }
 
         Arrays.sort(users, (User o1, User o2) -> User.compareThem(o1, o2));
-        final User[] sortedPart = Arrays.copyOfRange(users, startPos - 1, startPos + amount - 1);
+        final User[] sortedPart = Arrays.copyOfRange(users, offset, offset + limit);
 
         final Message responseMessage = StatusCodes.getSuccessCode("SUCCESS_GET_LEADERS");
         responseMessage.setUsers(sortedPart);
 
-        final int usersLeft = allUsersLength - startPos - sortedPart.length + 1;
+        final int usersLeft = allUsersLength - offset - sortedPart.length;
         responseMessage.setUsersLeft(usersLeft);
-
         return responseMessage;
     }
 

@@ -12,19 +12,19 @@ public class Users {
 
     private static final HashMap<String, User> USERS = new HashMap<String, User>() {
         {
+            final User masha  = new User("masha@mail.ru", "Masha", "2133qqqqq", 1340);
             final User andrey = new User("andreyBabkov@mail.ru", "Andrey", "2131110aaaa", 102);
             final User zhenya = new User("starina@mail.ru", "Starina", "21334sds", 102);
-            final User masha  = new User("masha@mail.ru", "Masha", "2133qqqqq", 1340);
-            final User user4 = new User("user4@mail.ru", "LoginA", "12345abc", 25);
-            final User user5 = new User("user5@mail.ru", "LoginB", "12345abc", 1);
-            final User user6 = new User("user6@mail.ru", "LoginC", "12345abc", 12);
-            final User user7 = new User("user7@mail.ru", "LoginD", "12345abc", 4);
-            final User user8 = new User("user8@mail.ru", "LoginE", "12345abc", 70);
-            final User user9 = new User("user9@mail.ru", "LoginF", "12345abc", 13);
-            final User user10 = new User("user10@mail.ru", "LoginG", "12345abc", 23);
-            final User user11 = new User("user11@mail.ru", "LoginH", "12345abc", 33);
-            final User user12 = new User("user12@mail.ru", "LoginJ", "12345abc", 47);
-            final User user13 = new User("user13@mail.ru", "LoginK", "12345abc", 33);
+            final User user4 = new User("user4@mail.ru", "LoginA", "12345abc", 101);
+            final User user5 = new User("user5@mail.ru", "LoginB", "12345abc", 100);
+            final User user6 = new User("user6@mail.ru", "LoginC", "12345abc", 90);
+            final User user7 = new User("user7@mail.ru", "LoginD", "12345abc", 50);
+            final User user8 = new User("user8@mail.ru", "LoginE", "12345abc", 40);
+            final User user9 = new User("user9@mail.ru", "LoginF", "12345abc", 33);
+            final User user10 = new User("user10@mail.ru", "LoginG", "12345abc", 20);
+            final User user11 = new User("user11@mail.ru", "LoginH", "12345abc", 17);
+            final User user12 = new User("user12@mail.ru", "LoginJ", "12345abc", 1);
+            final User user13 = new User("user13@mail.ru", "LoginK", "12345abc", 0);
 
             put(andrey.getMail(), andrey);
             put(zhenya.getMail(), zhenya);
