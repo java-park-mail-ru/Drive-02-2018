@@ -150,7 +150,7 @@ public class UsersController {
             }
         }
 
-        Arrays.sort(users, (User o1, User o2) -> User.compareThem(o1, o2));
+        Arrays.sort(users, (User o1, User o2) -> Integer.compare(o1.getScore(), o2.getScore()));
         final User[] sortedPart = Arrays.copyOfRange(users, offset, offset + limit);
 
         final Message responseMessage = StatusCodes.getSuccessCode("SUCCESS_GET_LEADERS");
