@@ -5,9 +5,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.models.AnswerModel;
 import project.models.ErrorModel;
-import project.models.QuestionModel;
 import project.models.SetModel;
 import project.services.SingleplayerService;
 
@@ -23,27 +21,6 @@ public class SingleplayerController {
         this.singleplayerService = singleplayerService;
     }
 
-//    @PostMapping(value = "/question/create", produces = "application/json")
-//    public ResponseEntity createQuestion(@RequestBody List<QuestionModel> question) {
-//        try {
-//            singleplayerService.createQuestion(question);
-//            return ResponseEntity.status(HttpStatus.CREATED).body(question);
-//        } catch (DataAccessException e) {
-//            final ErrorModel error = new ErrorModel("Question wasn't create");
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-//        }
-//    }
-//
-//    @PostMapping(value = "/answer/create", produces = "application/json")
-//    public ResponseEntity createAnswer(@RequestBody List<AnswerModel> answer) {
-//        try {
-//            singleplayerService.createAnswer(answer);
-//            return ResponseEntity.status(HttpStatus.CREATED).body(answer);
-//        } catch (DataAccessException e) {
-//            final ErrorModel error = new ErrorModel("Answer wasn't create");
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-//        }
-//    }
 
     @GetMapping(value = "/set/get", produces = "application/json")
     public ResponseEntity getSet(@RequestParam(value = "questions") Integer size,
@@ -64,8 +41,8 @@ public class SingleplayerController {
             final String answer = correct ? "{\"correct\": true}" : "{\"correct\": false}";
             return ResponseEntity.status(HttpStatus.OK).body(answer);
         } catch (DataAccessException e) {
-            final ErrorModel error = new ErrorModel("Requset url should be like /answer/check?question=4&answer=1" +
-                    " and query parameteres must be valid");
+            final ErrorModel error = new ErrorModel("Requset url should be like /answer/check?question=4&answer=1"
+                    + " and query parameteres must be valid");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
         }
     }

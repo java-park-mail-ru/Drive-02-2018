@@ -29,19 +29,19 @@ public class ApiRowMapper {
         return user;
     }
 
-    public static RowMapper<QuestionModel> getQuestion = (rs, rowNum) ->
+    private static RowMapper<QuestionModel> getQuestion = (rs, rowNum) ->
             new QuestionModel(rs.getString("question"),
                               rs.getString("theme"),
                               rs.getInt("id"));
 
-    public static RowMapper<AnswerModel> getAnswer = (rs, rowNum) ->
+    private static RowMapper<AnswerModel> getAnswer = (rs, rowNum) ->
             new AnswerModel(rs.getInt("answer_num"),
                     rs.getString("answer"),
                     rs.getInt("question_id"),
                     rs.getBoolean("correct"));
 
 
-    public static RowMapper<QuestionAndAnswer> getQuestionWithAnser = (rs, rowNum) ->
+    private static RowMapper<QuestionAndAnswer> getQuestionWithAnser = (rs, rowNum) ->
             new QuestionAndAnswer(rs.getInt("answer_num"),
                     rs.getInt("question_id"),
                     rs.getString("answer"),

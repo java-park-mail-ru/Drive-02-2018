@@ -52,22 +52,23 @@ public class SingleplayerService {
     public ArrayList<SetModel> getSet(Integer numberOfQuestions, String theme) {
 
         final String sql =
-            "SELECT q.id AS question_id, answer, question, theme, a.answer_num FROM questions q " +
-            "JOIN answers a ON q.id = a.question_id WHERE q.theme = ?::citext " +
-            "LIMIT ?";
+            "SELECT q.id AS question_id, answer, question, theme, a.answer_num FROM questions q "
+            + "JOIN answers a ON q.id = a.question_id WHERE q.theme = ?::citext "
+            + "LIMIT ?";
         //todo убрать константу - 4 ответа на вопрос
         final List<QuestionAndAnswer> questionAndAnswers =
             jdbcTemplate.query(sql, ApiRowMapper.getQuestionWithAnser, theme, numberOfQuestions * 4);
 
         if (questionAndAnswers.isEmpty()) {
-            throw new DataAccessException("Result is emty"){};
+            throw new DataAccessException("Result is emty") { };
         }
 
         final LinkedHashMap<QuestionModel, ArrayList<AnswerModel>> questionsMap = new LinkedHashMap<>();
 
         //получили набор, в котором повторяются вопросы. Необходимо получить структуру: {вопрос:[ответы]}
         for (QuestionAndAnswer i : questionAndAnswers) {
-            final ArrayList<AnswerModel> listOfAnswers = questionsMap.get(new QuestionModel(i.getQuestion(), i.getTheme(), i.getQuestionId()));
+            final ArrayList<AnswerModel> listOfAnswers
+                = questionsMap.get(new QuestionModel(i.getQuestion(), i.getTheme(), i.getQuestionId()));
 
             if (listOfAnswers != null) {
                 listOfAnswers.add(new AnswerModel(i.getAnswerNum(),  i.getAnswer(), i.getQuestionId()));

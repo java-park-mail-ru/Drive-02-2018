@@ -23,7 +23,7 @@ public class AnswerModel {
         this.correct = correct;
     }
 
-    public AnswerModel(Integer answerNum, String answer,Integer questionId) {
+    public AnswerModel(Integer answerNum, String answer, Integer questionId) {
         this.answerNum = answerNum;
         this.answer = answer;
         this.questionId = questionId;

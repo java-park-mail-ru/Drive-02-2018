@@ -52,13 +52,13 @@ public class QuestionModel {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object object) {
 
-        if (!(o instanceof QuestionModel)) {
+        if (!(object instanceof QuestionModel)) {
             return false;
         }
 
-        final QuestionModel rhs = (QuestionModel) o;
+        final QuestionModel rhs = (QuestionModel) object;
         return this.id.equals(rhs.getId());
     }
 
@@ -66,7 +66,5 @@ public class QuestionModel {
     public int hashCode() {
         return this.id.hashCode();
     }
-
-    Object as = new Object();
 
 }

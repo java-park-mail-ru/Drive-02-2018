@@ -31,7 +31,7 @@ public class QuestionAndAnswer {
         return answerNum;
     }
 
-    public void setAnswerINum(Integer answerNum) {
+    public void setAnswerNum(Integer answerNum) {
         this.answerNum = answerNum;
     }
 
