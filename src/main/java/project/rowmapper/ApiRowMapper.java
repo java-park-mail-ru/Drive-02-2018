@@ -29,22 +29,33 @@ public class ApiRowMapper {
         return user;
     }
 
-    private static RowMapper<QuestionModel> getQuestion = (rs, rowNum) ->
+    private static RowMapper<QuestionModel> question = (rs, rowNum) ->
             new QuestionModel(rs.getString("question"),
                               rs.getString("theme"),
                               rs.getInt("id"));
 
-    private static RowMapper<AnswerModel> getAnswer = (rs, rowNum) ->
+    public static RowMapper<QuestionModel> getQuestion() {
+        return question;
+    }
+
+    private static RowMapper<AnswerModel> answer = (rs, rowNum) ->
             new AnswerModel(rs.getInt("answer_num"),
                     rs.getString("answer"),
                     rs.getInt("question_id"),
                     rs.getBoolean("correct"));
 
+    public static RowMapper<AnswerModel> getAnswer() {
+        return answer;
+    }
 
-    private static RowMapper<QuestionAndAnswer> getQuestionWithAnser = (rs, rowNum) ->
+    private static RowMapper<QuestionAndAnswer> questionWithAnser = (rs, rowNum) ->
             new QuestionAndAnswer(rs.getInt("answer_num"),
                     rs.getInt("question_id"),
                     rs.getString("answer"),
                     rs.getString("question"),
                     rs.getString("theme"));
+
+    public static RowMapper<QuestionAndAnswer> getQuestionWithAnser() {
+        return questionWithAnser;
+    }
 }

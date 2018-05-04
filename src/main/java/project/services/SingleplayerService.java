@@ -11,7 +11,6 @@ import project.models.QuestionModel;
 import project.models.SetModel;
 import project.rowmapper.ApiRowMapper;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -57,7 +56,7 @@ public class SingleplayerService {
             + "LIMIT ?";
         //todo убрать константу - 4 ответа на вопрос
         final List<QuestionAndAnswer> questionAndAnswers =
-            jdbcTemplate.query(sql, ApiRowMapper.getQuestionWithAnser, theme, numberOfQuestions * 4);
+            jdbcTemplate.query(sql, ApiRowMapper.getQuestionWithAnser(), theme, numberOfQuestions * 4);
 
         if (questionAndAnswers.isEmpty()) {
             throw new DataAccessException("Result is emty") { };
