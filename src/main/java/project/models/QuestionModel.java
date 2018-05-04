@@ -21,6 +21,12 @@ public class QuestionModel {
         this.id = id;
     }
 
+    public QuestionModel(@JsonProperty("question") String question,
+                         @JsonProperty("theme") String theme) {
+        this.question = question;
+        this.theme = theme;
+    }
+
     public String getQuestion() {
         return question;
     }
@@ -60,5 +66,7 @@ public class QuestionModel {
     public int hashCode() {
         return this.id.hashCode();
     }
+
+    Object as = new Object();
 
 }

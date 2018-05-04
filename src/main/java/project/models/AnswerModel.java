@@ -6,30 +6,35 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AnswerModel {
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Integer id;
+    private Integer answerNum;
     private Integer questionId;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean correct;
     private String answer;
 
     @JsonCreator
-    public AnswerModel(@JsonProperty("id") Integer id,
+    public AnswerModel(@JsonProperty("answerNum") Integer answerNum,
                        @JsonProperty("answer") String answer,
                        @JsonProperty("questionId") Integer questionId,
                        @JsonProperty("correct") Boolean correct) {
-        this.id = id;
+        this.answerNum = answerNum;
         this.answer = answer;
         this.questionId = questionId;
         this.correct = correct;
     }
 
-    public Integer getId() {
-        return id;
+    public AnswerModel(Integer answerNum, String answer,Integer questionId) {
+        this.answerNum = answerNum;
+        this.answer = answer;
+        this.questionId = questionId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public Integer getAnswerNum() {
+        return answerNum;
+    }
+
+    public void setAnswerNum(Integer answerNum) {
+        this.answerNum = answerNum;
     }
 
     public Integer getQuestionId() {

@@ -35,16 +35,15 @@ public class ApiRowMapper {
                               rs.getInt("id"));
 
     public static RowMapper<AnswerModel> getAnswer = (rs, rowNum) ->
-            new AnswerModel(rs.getInt("id"),
+            new AnswerModel(rs.getInt("answer_num"),
                     rs.getString("answer"),
                     rs.getInt("question_id"),
                     rs.getBoolean("correct"));
 
 
     public static RowMapper<QuestionAndAnswer> getQuestionWithAnser = (rs, rowNum) ->
-            new QuestionAndAnswer(rs.getInt("answer_id"),
+            new QuestionAndAnswer(rs.getInt("answer_num"),
                     rs.getInt("question_id"),
-                    rs.getBoolean("correct"),
                     rs.getString("answer"),
                     rs.getString("question"),
                     rs.getString("theme"));
