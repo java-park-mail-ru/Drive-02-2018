@@ -29,13 +29,13 @@ Java course 02.2018. Project: Drive
 {    "mail":"example@mail.ru", <br />
      "password":"12345" }<br />
 
-**/user** - вывод информации о пользователе в текущей сессии<br />
+**/userModel** - вывод информации о пользователе в текущей сессии<br />
  
  Вывод, в случае корректной куки: 
 <br />
 {"success":"true",<br />
- "status":"Your user is here",<br />
- "user":{<br />
+ "status":"Your userModel is here",<br />
+ "userModel":{<br />
 	"id":3,<br />
 	"mail":"andreyka@mail.ru",<br />
 	"password":"213111",<br />
@@ -71,6 +71,6 @@ Java course 02.2018. Project: Drive
 
 "SUCCESS_NEW_USER", "User was successfully added"<br />
 "SUCCESS_SIGNIN", "You have successfully logined"<br />
-"SUCCESS_GET_USER", "Your user is here"<br />
+"SUCCESS_GET_USER", "Your userModel is here"<br />
 "SUCCESS_LOGOUT", "Your have successfully logout"<br />
 "SUCCESS_UPDATE_PROFILE", "Your have successfully update your profile"<br />
