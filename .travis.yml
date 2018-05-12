@@ -3,7 +3,7 @@ jdk:
   - oraclejdk9
 sudo: required
 branches:
-  - develop
+  - master
 addons:
   postgresql: "9.6"
   services:
