@@ -4,7 +4,6 @@ package project.services;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import project.models.UserModel;
-import project.rowmapper.ApiRowMapper;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class UserService {
     public UserModel signin(UserModel user) {
         final String sql =
             "SELECT email, login, score FROM users WHERE email = ? AND password = crypt(?, password);";
-        return jdbcTemplate.queryForObject(sql, ApiRowMapper.getUser(), user.getMail(), user.getPassword());
+        return jdbcTemplate.queryForObject(sql, UserModel::getUser, user.getMail(), user.getPassword());
 
     }
 
@@ -37,7 +36,7 @@ public class UserService {
     public UserModel getUserByMail(String mail) {
         final String sql =
                 "SELECT email, login, score FROM users WHERE email = ?";
-        return jdbcTemplate.queryForObject(sql, ApiRowMapper.getUser(), mail);
+        return jdbcTemplate.queryForObject(sql, UserModel::getUser, mail);
     }
 
 
@@ -70,15 +69,14 @@ public class UserService {
         sql += " WHERE email = ?";
         values.add(sessionMail);
         jdbcTemplate.update(sql, values.toArray());
-
         return getUserByMail(changedMail);
-
     }
 
 
     public UserModel[] getLeaders(int startPos, int amount) {
         final String sql = "SELECT login, score FROM users ORDER BY score DESC OFFSET ? LIMIT ?";
-        final List<UserModel> users = jdbcTemplate.query(sql, ApiRowMapper.getUserLoginAndScore(), startPos, amount);
+        final List<UserModel> users =
+            jdbcTemplate.query(sql, UserModel::getUserLoginAndScore, startPos, amount);
         final UserModel[] arrayOfUsers = new UserModel[users.size()];
         return users.toArray(arrayOfUsers);
     }

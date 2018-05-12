@@ -9,7 +9,7 @@ import project.models.AnswerModel;
 import project.models.QuestionAndAnswer;
 import project.models.QuestionModel;
 import project.models.SetModel;
-import project.rowmapper.ApiRowMapper;
+
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -54,9 +54,8 @@ public class SingleplayerService {
             "SELECT q.id AS question_id, answer, question, theme, a.answer_num FROM questions q "
             + "JOIN answers a ON q.id = a.question_id WHERE q.theme = ?::citext "
             + "LIMIT ?";
-        //todo убрать константу - 4 ответа на вопрос
         final List<QuestionAndAnswer> questionAndAnswers =
-            jdbcTemplate.query(sql, ApiRowMapper.getQuestionWithAnser(), theme, numberOfQuestions * 4);
+            jdbcTemplate.query(sql, QuestionAndAnswer::getQuestionAndAnswerMapper, theme, numberOfQuestions * 4);
 
         if (questionAndAnswers.isEmpty()) {
             throw new DataAccessException("Result is emty") { };

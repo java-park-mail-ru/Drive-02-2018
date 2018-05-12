@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 
 public class QuestionModel {
 
@@ -67,4 +70,10 @@ public class QuestionModel {
         return this.id.hashCode();
     }
 
+
+    public static QuestionModel getQuestionMapper(ResultSet rs, int amount) throws SQLException {
+       return new QuestionModel(rs.getString("question"),
+                rs.getString("theme"),
+                rs.getInt("id"));
+    }
 }

@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 
 @SuppressWarnings("unused")
 public class UserModel {
@@ -72,4 +75,19 @@ public class UserModel {
     public void setScore(Integer score) {
         this.score = score;
     }
+
+    public static UserModel getUser(ResultSet rs, int amount) throws SQLException {
+        return new UserModel(
+                rs.getString("email"),
+                rs.getString("login"),
+                rs.getInt("score"));
+    }
+
+
+    public static UserModel getUserLoginAndScore(ResultSet rs, int amount) throws SQLException  {
+        return new UserModel(
+                rs.getString("login"),
+                rs.getInt("score"));
+    }
+
 }

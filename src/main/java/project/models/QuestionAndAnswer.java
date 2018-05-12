@@ -1,6 +1,9 @@
 package project.models;
 
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class QuestionAndAnswer {
 
     private Integer answerNum;
@@ -57,5 +60,14 @@ public class QuestionAndAnswer {
 
     public void setTheme(String theme) {
         this.theme = theme;
+    }
+
+    public static QuestionAndAnswer getQuestionAndAnswerMapper(ResultSet rs, int amount)
+            throws SQLException {
+        return new QuestionAndAnswer(rs.getInt("answer_num"),
+                rs.getInt("question_id"),
+                rs.getString("answer"),
+                rs.getString("question"),
+                rs.getString("theme"));
     }
 }

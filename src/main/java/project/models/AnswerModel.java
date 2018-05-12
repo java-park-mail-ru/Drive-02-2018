@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class AnswerModel {
 
     private Integer answerNum;
@@ -59,5 +62,12 @@ public class AnswerModel {
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    public static AnswerModel getAnswerMapper(ResultSet rs, int amount) throws SQLException {
+        return new AnswerModel(rs.getInt("answer_num"),
+                rs.getString("answer"),
+                rs.getInt("question_id"),
+                rs.getBoolean("correct"));
     }
 }

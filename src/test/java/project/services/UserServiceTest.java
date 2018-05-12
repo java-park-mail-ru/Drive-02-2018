@@ -17,7 +17,6 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Transactional
 public class UserServiceTest {
     @Autowired
     private UserService userService;
@@ -43,7 +42,7 @@ public class UserServiceTest {
     @DisplayName("User creation")
     public void testCreate() {
         userService.create(user);
-        final UserModel userFromTable= userService.getUserByMail(user.getMail());
+        final UserModel userFromTable = userService.getUserByMail(user.getMail());
         assertDifference(user, userFromTable);
     }
 
@@ -68,7 +67,7 @@ public class UserServiceTest {
     @Test(expected = DataAccessException.class)
     @DisplayName("Get nonexistent user")
     public void testGetEmtyUser() {
-        final UserModel userFromTable= userService.getUserByMail("random_mail");
+        final UserModel userFromTable = userService.getUserByMail("random_mail");
         assertEquals("Nonexistent users exists", userFromTable, null);
     }
 
