@@ -36,4 +36,8 @@ public class SetModel {
     public void setAnswers(List<AnswerModel> answers) {
         this.answers = answers;
     }
+
+    public Integer getQuestionId() {
+        return question.getId();
+    }
 }

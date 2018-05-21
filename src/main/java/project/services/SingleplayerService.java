@@ -96,9 +96,19 @@ public class SingleplayerService {
     }
 
 
+    public Integer getCorrectNum(Integer questionId) {
+        final String sql = "SELECT answer_num FROM answers WHERE question_id = ? AND correct = true";
+        return jdbcTemplate.queryForObject(sql, Integer.class, questionId);
+    }
+
     public void clear() {
         jdbcTemplate.execute("DELETE FROM questions");
         jdbcTemplate.execute("DELETE FROM answers");
+    }
+
+    public List<String> getAllThemes() {
+        final String sql = "SELECT DISTINCT theme FROM questions";
+        return jdbcTemplate.queryForList(sql, String.class);
     }
 
 }

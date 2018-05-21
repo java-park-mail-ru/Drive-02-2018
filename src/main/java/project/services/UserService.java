@@ -10,7 +10,6 @@ import java.util.List;
 @Service
 public class UserService {
 
-    //todo транзакции, чтобы бд не херить
     private JdbcTemplate jdbcTemplate;
 
 
@@ -27,7 +26,7 @@ public class UserService {
 
     public UserModel signin(UserModel user) {
         final String sql =
-            "SELECT email, login, score FROM users WHERE email = ? AND password = crypt(?, password);";
+            "SELECT email, login, score, id FROM users WHERE email = ? AND password = crypt(?, password);";
         return jdbcTemplate.queryForObject(sql, UserModel::getUser, user.getMail(), user.getPassword());
 
     }
@@ -35,7 +34,7 @@ public class UserService {
 
     public UserModel getUserByMail(String mail) {
         final String sql =
-                "SELECT email, login, score FROM users WHERE email = ?";
+                "SELECT email, login, score, id FROM users WHERE email = ?";
         return jdbcTemplate.queryForObject(sql, UserModel::getUser, mail);
     }
 

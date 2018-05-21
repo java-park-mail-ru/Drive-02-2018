@@ -20,17 +20,35 @@ public class UserModel {
     private String login;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer score;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Long id;
 
 
     @JsonCreator
     public UserModel(@JsonProperty("mail") String mail,
                      @JsonProperty("login") String login,
                      @JsonProperty("score") Integer score,
-                     @JsonProperty("password") String password) {
+                     @JsonProperty("password") String password,
+                     @JsonProperty("id") Long id) {
         this.mail = mail;
         this.password = password;
         this.login = login;
         this.score = score;
+        this.id = id;
+    }
+
+    public UserModel(String mail, String login, Integer score, String password) {
+        this.mail = mail;
+        this.login = login;
+        this.score = score;
+        this.password = password;
+    }
+
+    public UserModel(String mail, String login, Integer score, Long id) {
+        this.mail = mail;
+        this.login = login;
+        this.score = score;
+        this.id = id;
     }
 
     public UserModel(String mail, String login, Integer score) {
@@ -76,11 +94,16 @@ public class UserModel {
         this.score = score;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public static UserModel getUser(ResultSet rs, int amount) throws SQLException {
         return new UserModel(
                 rs.getString("email"),
                 rs.getString("login"),
-                rs.getInt("score"));
+                rs.getInt("score"),
+                rs.getLong("id"));
     }
 
 
