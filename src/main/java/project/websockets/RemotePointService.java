@@ -119,7 +119,7 @@ public class RemotePointService {
             try {
                 this.sendMessageToUser(userId1, new Start(gameSession, userId1));
                 this.sendMessageToUser(userId2, new Start(gameSession, userId2));
-            } catch ( IOException e) {
+            } catch (IOException e) {
                 logger.error(e.getMessage());
             }
         } else {

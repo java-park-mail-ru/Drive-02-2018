@@ -12,7 +12,9 @@ import java.io.IOException;
 public class MessageSender {
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageSender.class);
 
-    MessageSender() {}
+    MessageSender() {
+
+    }
 
     public static boolean send(@Nullable WebSocketSession session, @NotNull TextMessage message) {
         try {

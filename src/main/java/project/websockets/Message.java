@@ -18,4 +18,6 @@ import project.mechanics.messages.*;
 })
 
 
-public abstract class Message {}
+public abstract class Message {
+
+}

@@ -6,7 +6,7 @@ import project.mechanics.GameSession;
 import project.websockets.Message;
 
 
-public class CheckedAnswer extends Message{
+public class CheckedAnswer extends Message {
     private Payload payload;
 
     @JsonCreator
