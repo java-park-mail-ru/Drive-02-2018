@@ -9,13 +9,15 @@ import java.util.ArrayList;
 public class GameUser {
 
     private Long userId;
+    private String login;
     private String selectedTheme;
     private ArrayList<SetModel> questions;
     private ArrayList<Integer> answers;
     private Integer correctAnswerAmount;
 
-    public GameUser(Long userId) {
+    public GameUser(Long userId, String login) {
         this.userId = userId;
+        this.login = login;
         answers = new ArrayList<Integer>();
         correctAnswerAmount = 0;
     }
@@ -62,5 +64,13 @@ public class GameUser {
 
     public void incrementCorrectAnswers() {
         this.correctAnswerAmount++;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 }

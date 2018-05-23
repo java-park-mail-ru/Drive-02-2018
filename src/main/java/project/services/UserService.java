@@ -12,7 +12,6 @@ public class UserService {
 
     private JdbcTemplate jdbcTemplate;
 
-
     public UserService(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -80,4 +79,9 @@ public class UserService {
         return users.toArray(arrayOfUsers);
     }
 
+
+    public void incrementScoreById(Long id) {
+        final String sql = "UPDATE users SET score = score + 1 WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
 }

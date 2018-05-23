@@ -32,6 +32,7 @@ public class RemotePointService {
     private final Logger logger = LoggerFactory.getLogger(RemotePointService.class);
     private final Map<Long, WebSocketSession> sessions = new ConcurrentHashMap<>();
     private final HashMap<String, Long> userMailIdMap = new HashMap<>();
+    private final HashMap<Long, String> userIdAndLogin = new HashMap<>();
     private final Queue<Long> waiters = new ConcurrentLinkedDeque<>();
     private final Map<Long, GameSession> gameMap = new ConcurrentHashMap<>();
 
@@ -76,6 +77,9 @@ public class RemotePointService {
             }
         } else if (message.getClass() == NeedResult.class) {
             this.sendMessageToUser(userId, new ResultMessage(gameSession, userId));
+            if (gameSession.needUpdateScore()) {
+                gameSession.saveResults();
+            }
         }
     }
 
@@ -96,18 +100,22 @@ public class RemotePointService {
     }
 
 
-    public void addWaiter(String userMail) {
+    public void addWaiter(String userMail, Message message) {
         final Long userId = this.userMailIdMap.get(userMail);
         this.waiters.add(userId);
+        final JoinGame joinGame = (JoinGame) message;
+        final String login = joinGame.getLogin();
+        userIdAndLogin.put(userId, login);
 
         if (waiters.size() > 1) {
             final Long userId1 = waiters.poll();
             final Long userId2 = waiters.poll();
-            final GameSession gameSession = new GameSession(userId1, userId2, singleplayerService);
+            final GameSession gameSession = new GameSession(userId1, userId2,
+                    singleplayerService, userIdAndLogin.get(userId1),
+                    userIdAndLogin.get(userId2), this.userService);
             gameMap.put(userId1, gameSession);
             gameMap.put(userId2, gameSession);
             gameSession.start();
-
             try {
                 this.sendMessageToUser(userId1, new Start(gameSession, userId1));
                 this.sendMessageToUser(userId2, new Start(gameSession, userId2));
@@ -116,10 +124,10 @@ public class RemotePointService {
             }
         } else {
             try {
-                final TextMessage message = new TextMessage(objectMapper.writeValueAsString(
+                final TextMessage mesageToAnswer = new TextMessage(objectMapper.writeValueAsString(
                                 singletonMap("message", "waiting for new users")
                  ));
-                MessageSender.send(sessions.get(userId), message);
+                MessageSender.send(sessions.get(userId), mesageToAnswer);
             } catch (JsonProcessingException e) {
                 //такого быть не может
             }
@@ -135,7 +143,7 @@ public class RemotePointService {
         } else if (gameMap.containsKey(userId)) {
             final GameSession userGame = gameMap.get(userId);
         }
-        //games.remove(userGame)    ;
+        //games.remove(userGame);
         this.closeWebScoket(webSocketSession);
         sessions.remove(userId);
     }

@@ -52,7 +52,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
         try {
             final Message message = objectMapper.readValue(jsonTextMessage.getPayload(), Message.class);
             if (message.getClass() == JoinGame.class) {
-                service.addWaiter(userMail);
+                service.addWaiter(userMail, message);
             } else {
                 service.handleGameMessage(message, userMail);
             }

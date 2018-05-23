@@ -8,6 +8,8 @@ import project.mechanics.messages.NewAnswer;
 import project.mechanics.messages.ThemeSelected;
 import project.models.SetModel;
 import project.services.SingleplayerService;
+import project.services.UserService;
+
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,17 +31,24 @@ public class GameSession {
     private ArrayList<SetModel> questions;
     private ArrayList<Integer> correctAnswers;
     private Integer questionsAnswered;
+    private UserService userService;
+    private Boolean alreadyUpdateScore;
 
     public GameSession(@NotNull Long userId1,
                        @NotNull Long userId2,
-                       @NotNull SingleplayerService singleplayerService) {
-        this.gameUser1 = new GameUser(userId1);
-        this.gameUser2 = new GameUser(userId2);
+                       @NotNull SingleplayerService singleplayerService,
+                       @NotNull String userLogin1,
+                       @NotNull String userLogin2,
+                       @NotNull UserService userService) {
+        this.gameUser1 = new GameUser(userId1, userLogin1);
+        this.gameUser2 = new GameUser(userId2, userLogin2);
         this.singleplayerService = singleplayerService;
         this.state = States.AWAITING;
         this.questions = new ArrayList<SetModel>();
         this.correctAnswers = new ArrayList<Integer>();
+        this.userService = userService;
         questionsAnswered = 0;
+        alreadyUpdateScore = false;
     }
 
     public void start() {
@@ -52,6 +61,7 @@ public class GameSession {
         }
         return gameUser2;
     }
+
 
     public boolean selectTheme(ThemeSelected themeMessage, Long userId) {
         final GameUser gamer = getUser(userId);
@@ -68,6 +78,7 @@ public class GameSession {
         this.questions.addAll(gamer.getQuestions());
         return true;
     }
+
 
     private ArrayList<SetModel> randomQuestions() {
         final List<String> themes = singleplayerService.getAllThemes();
@@ -94,6 +105,22 @@ public class GameSession {
             return true;
         }
         return false;
+    }
+
+    public boolean needUpdateScore() {
+        if (!alreadyUpdateScore) {
+           alreadyUpdateScore = true;
+           return true;
+        }
+        return false;
+    }
+
+    public void saveResults() {
+        if (gameUser1.getCorrectAnswerAmount() > gameUser2.getCorrectAnswerAmount()) {
+            userService.incrementScoreById(gameUser1.getUserId());
+        } else if (gameUser1.getCorrectAnswerAmount() < gameUser2.getCorrectAnswerAmount()) {
+            userService.incrementScoreById(gameUser2.getUserId());
+        }
     }
 
     public Long getUserId2() {
@@ -128,5 +155,10 @@ public class GameSession {
     public Integer getCorrectAnswersAmount(Long userId) {
         final GameUser gamer = this.getUser(userId);
         return gamer.getCorrectAnswerAmount();
+    }
+
+    public String getLoginById(Long id) {
+        final GameUser user = this.getUser(id);
+        return user.getLogin();
     }
 }

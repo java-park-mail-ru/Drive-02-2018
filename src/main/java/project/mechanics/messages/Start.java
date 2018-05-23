@@ -16,12 +16,14 @@ public class Start extends Message {
         private final Long userId1;
         private final Long userId2;
         private final Long userId;
+        private final String opponentLogin;
 
         @JsonCreator
         public Payload(GameSession newGame, Long userId) {
             this.userId1 = newGame.getUserId1();
             this.userId2 = newGame.getUserId2();
             this.userId = userId;
+            this.opponentLogin = newGame.getLoginById(userId);
         }
 
         public Long getUserId1() {
@@ -34,6 +36,10 @@ public class Start extends Message {
 
         public Long getUserId() {
             return userId;
+        }
+
+        public String getOpponentLogin() {
+            return opponentLogin;
         }
     }
 

@@ -5,19 +5,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import project.websockets.Message;
 
 public class JoinGame extends Message {
-    private String payload;
+    private String login;
 
     @JsonCreator
     public JoinGame(@JsonProperty("payload") String payload) {
-        this.payload = payload;
+        this.login = payload;
     }
 
-    public String getPayLoad() {
-        return payload;
+    public String getLogin() {
+        return login;
     }
 
-    public void setPayload(String payload) {
-        this.payload = payload;
+    public void setLogin(String payload) {
+        this.login = payload;
     }
 
 }
