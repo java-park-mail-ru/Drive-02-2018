@@ -23,7 +23,7 @@ public class Start extends Message {
             this.userId1 = newGame.getUserId1();
             this.userId2 = newGame.getUserId2();
             this.userId = userId;
-            final Long opponentId = userId.equals(userId1) ? userId1 : userId2;
+            final Long opponentId = userId.equals(userId1) ? userId2 : userId1;
             this.opponentLogin = newGame.getLoginById(opponentId);
         }
 
