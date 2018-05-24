@@ -17,8 +17,7 @@ public class CorsConfiguration implements WebMvcConfigurer {
                 .allowedOrigins(
                         "https://reallyawesomeapp.herokuapp.com/",
                         "http://localhost:3000",
-                        "https://frontend-drive.herokuapp.com",
-                        "http://frontend-drive.herokuapp.com"
+                        "https://frontend-drive.herokuapp.com"
                 );
     }
 }
