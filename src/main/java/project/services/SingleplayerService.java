@@ -90,9 +90,9 @@ public class SingleplayerService {
     }
 
 
-    public Boolean checkAnswer(Integer questionId, Integer answerNum) {
-        final String sql = "SELECT correct FROM answers WHERE question_id = ? AND answer_num = ?";
-        return jdbcTemplate.queryForObject(sql, Boolean.class, questionId, answerNum);
+    public Integer getCorrectAnswer(Integer questionId) {
+        final String sql = "SELECT answer_num FROM answers WHERE question_id = ? AND correct = true";
+        return jdbcTemplate.queryForObject(sql, Integer.class, questionId);
     }
 
 

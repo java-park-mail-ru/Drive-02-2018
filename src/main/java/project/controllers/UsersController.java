@@ -1,6 +1,8 @@
 package project.controllers;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
@@ -19,7 +21,7 @@ import javax.servlet.http.HttpSession;
 public class UsersController {
 
     private UserService userService;
-
+    private final Logger logger = LoggerFactory.getLogger(UsersController.class);
 
     public UsersController(UserService userService) {
         this.userService = userService;
@@ -61,15 +63,19 @@ public class UsersController {
     @GetMapping(value = "/user", produces = "application/json")
     public ResponseEntity getUser(HttpSession session) {
         final String currentMail = (String) session.getAttribute("mail");
-
+        logger.info("In /user getUser() method. currentMail from COOKIES: " + currentMail);
         if (StringUtils.isEmpty(currentMail)) {
+            logger.info("In /user getUser() method. currentMail is empty");
             return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(StatusCodes.getErrorCode("NOT_LOGINED"));
         }
 
         final UserModel returnUser;
         try {
+            logger.info("In /user getUser() method. trying get returnUser");
             returnUser = userService.getUserByMail(currentMail);
+            logger.info("In /user getUser() method. returnUser is ok");
         } catch (DataAccessException e) {
+            logger.info("In /user getUser() method. Got error: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(StatusCodes.getErrorCode("WRONG_COOKIE"));
         }
 

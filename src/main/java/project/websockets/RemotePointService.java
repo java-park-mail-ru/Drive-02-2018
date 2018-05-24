@@ -79,6 +79,8 @@ public class RemotePointService {
             this.sendMessageToUser(userId, new ResultMessage(gameSession, userId));
             if (gameSession.needUpdateScore()) {
                 gameSession.saveResults();
+                gameMap.remove(gameSession.getUserId1());
+                gameMap.remove(gameSession.getUserId2());
             }
         }
     }
