@@ -82,6 +82,8 @@ public class RemotePointService {
                 gameMap.remove(gameSession.getUserId1());
                 gameMap.remove(gameSession.getUserId2());
             }
+        } else if (message.getClass() == CancelGame.class) {
+            disconnectedHandler(userMail);
         }
     }
 

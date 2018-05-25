@@ -14,7 +14,8 @@ import project.mechanics.messages.*;
         @JsonSubTypes.Type(value = NewAnswer.class, name = "EVENTS_NEW_ANSWER"),
         @JsonSubTypes.Type(value = CheckedAnswer.class, name = "EVENTS_ANSWER_CHECKED"),
         @JsonSubTypes.Type(value = NeedResult.class, name = "EVENTS_NEED_RESULT"),
-        @JsonSubTypes.Type(value = ResultMessage.class, name = "EVENTS_GAME_FINISHED")
+        @JsonSubTypes.Type(value = ResultMessage.class, name = "EVENTS_GAME_FINISHED"),
+        @JsonSubTypes.Type(value = CancelGame.class, name = "EVENTS_CANCEL_GAME")
 })
 
 
