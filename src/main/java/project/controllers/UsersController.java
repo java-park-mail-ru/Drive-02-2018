@@ -36,8 +36,6 @@ public class UsersController {
         }
 
         session.setAttribute("mail", user.getMail());
-        // Пароль null, чтобы он не отсылался в JSON-е
-        user.setPassword(null);
         user.setScore(0);
         return ResponseEntity.status(HttpStatus.CREATED).body(StatusCodes.returnUser("CREATED", user));
     }

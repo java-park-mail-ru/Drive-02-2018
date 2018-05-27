@@ -81,4 +81,9 @@ public class UserService {
         return users.toArray(arrayOfUsers);
     }
 
+    public Integer updateScore(String email) {
+        final String sql = "UPDATE users SET score = score + 1 WHERE email = ? RETURNING score";
+        return jdbcTemplate.queryForObject(sql, Integer.class, email);
+    }
+
 }

@@ -24,13 +24,13 @@ public class SingleplayerService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-
+   @Transactional(rollbackFor = Exception.class)
     public Integer createQuestion(QuestionModel question) {
         final String sql = "INSERT INTO questions(question, theme) VALUES (?, ?) RETURNING id";
         return jdbcTemplate.queryForObject(sql, Integer.class, question.getQuestion(), question.getTheme());
     }
 
-
+    @Transactional(rollbackFor = Exception.class)
     public void createAnswer(AnswerModel answer, Integer questionId) {
         final String sql = "INSERT INTO answers(answer, question_id, correct, answer_num) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql, answer.getAnswer(), questionId, answer.getCorrect(), answer.getAnswerNum());
@@ -48,7 +48,7 @@ public class SingleplayerService {
     }
 
 
-    public ArrayList<SetModel> getSet(Integer numberOfQuestions, String theme) {
+    public List<SetModel> getSet(Integer numberOfQuestions, String theme) {
 
         final String sql =
             "SELECT q.id AS question_id, answer, question, theme, a.answer_num FROM questions q "
@@ -61,17 +61,17 @@ public class SingleplayerService {
             throw new DataAccessException("Result is emty") { };
         }
 
-        final LinkedHashMap<QuestionModel, ArrayList<AnswerModel>> questionsMap = new LinkedHashMap<>();
+        final LinkedHashMap<QuestionModel, List<AnswerModel>> questionsMap = new LinkedHashMap<>();
 
         //получили набор, в котором повторяются вопросы. Необходимо получить структуру: {вопрос:[ответы]}
         for (QuestionAndAnswer i : questionAndAnswers) {
-            final ArrayList<AnswerModel> listOfAnswers
+            final List<AnswerModel> listOfAnswers
                 = questionsMap.get(new QuestionModel(i.getQuestion(), i.getTheme(), i.getQuestionId()));
 
             if (listOfAnswers != null) {
                 listOfAnswers.add(new AnswerModel(i.getAnswerNum(),  i.getAnswer(), i.getQuestionId()));
             } else {
-                final ArrayList<AnswerModel> answers = new ArrayList<>();
+                final List<AnswerModel> answers = new ArrayList<>();
                 answers.add(new AnswerModel(i.getAnswerNum(),  i.getAnswer(), i.getQuestionId()));
                 final QuestionModel question = new QuestionModel(i.getQuestion(), i.getTheme(), i.getQuestionId());
                 questionsMap.put(question, answers);
@@ -79,7 +79,7 @@ public class SingleplayerService {
         }
 
         //у Jacksona-а не получается правильно сериализовать хэш-мапину, в отличие от List-а
-        final ArrayList<SetModel> resultSet = new ArrayList<>();
+        final List<SetModel> resultSet = new ArrayList<>();
         for (QuestionModel q : questionsMap.keySet()) {
             final  SetModel set = new SetModel(q);
             set.setAnswers(questionsMap.get(q));
