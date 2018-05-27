@@ -127,10 +127,11 @@ public class UsersController {
     }
 
 
-    @GetMapping(value = "/leaders/{startPos:[\\d]+}/{amount:[\\d]+}", produces = "application/json")
-    public ResponseEntity loadLeaders(@PathVariable int startPos, @PathVariable int amount) {
+    @GetMapping(value = "/leaders", produces = "application/json")
+    public ResponseEntity loadLeaders(@RequestParam(value = "limit") int limit,
+                                      @RequestParam(value = "offset") int offset) {
         try {
-            final UserModel[] users = userService.getLeaders(startPos, amount);
+            final UserModel[] users = userService.getLeaders(offset, limit);
             final Message response = StatusCodes.getSuccessCode("GET_LEADERS");
             response.setUsers(users);
             return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -139,5 +140,4 @@ public class UsersController {
                     .body(StatusCodes.getErrorCode("ERROR"));
         }
     }
-
 }
