@@ -113,4 +113,18 @@ public class UserModel {
                 rs.getInt("score"));
     }
 
+    public static int compareScore(UserModel first, UserModel second) {
+        if (first.getScore().equals(second.getScore())) {
+            return 0;
+        }
+        return (first.getScore() < second.getScore()) ? 1 : -1;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        final UserModel otherUser = (UserModel) other;
+        return login.equals(otherUser.getLogin())
+                && mail.equals(otherUser.getMail())
+                && score.equals(otherUser.getScore());
+    }
 }

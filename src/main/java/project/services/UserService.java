@@ -76,11 +76,15 @@ public class UserService {
     public UserModel[] getLeaders(int startPos, int amount) {
         final String sql = "SELECT login, score FROM users ORDER BY score DESC OFFSET ? LIMIT ?";
         final List<UserModel> users =
-            jdbcTemplate.query(sql, UserModel::getUserLoginAndScore, startPos, amount);
+                jdbcTemplate.query(sql, UserModel::getUserLoginAndScore, startPos, amount);
         final UserModel[] arrayOfUsers = new UserModel[users.size()];
         return users.toArray(arrayOfUsers);
     }
 
+    public Integer updateScore(String email) {
+        final String sql = "UPDATE users SET score = score + 1 WHERE email = ? RETURNING score";
+        return jdbcTemplate.queryForObject(sql, Integer.class, email);
+    }
 
     public void incrementScoreById(Long id) {
         final String sql = "UPDATE users SET score = score + 1 WHERE id = ?";
