@@ -1,9 +1,10 @@
-package main.status;
+package project.status;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import main.models.User;
+import project.models.UserModel;
 
+@SuppressWarnings("unused")
 public class Message {
 
     @JsonProperty
@@ -14,24 +15,31 @@ public class Message {
 
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private User user;
+    private UserModel user;
 
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private User[] users;
+    private UserModel[] users;
 
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private int usersLeft;
+    private Integer usersLeft;
 
-    Message() {
+
+    public Message() {
         success = false;
         status = "undefined";
     }
 
-    Message(boolean success, String status) {
+    public Message(boolean success, String status) {
         this.success = success;
         this.status = status;
+    }
+
+    public Message(boolean success, String status, UserModel user) {
+        this.success = success;
+        this.status = status;
+        this.user = user;
     }
 
     public boolean getSuccess() {
@@ -42,15 +50,15 @@ public class Message {
         return status;
     }
 
-    public User getUser() {
+    public UserModel getUser() {
         return user;
     }
 
-    public int gerUsersLeft() {
+    public Integer getUsersLeft() {
         return this.usersLeft;
     }
 
-    public User[] getUsers() {
+    public UserModel[] getUsers() {
         return users;
     }
 
@@ -63,15 +71,15 @@ public class Message {
     }
 
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(UserModel userModel) {
+        this.user = userModel;
     }
 
-    public void setUsers(User[] users) {
+    public void setUsers(UserModel[] users) {
         this.users = users;
     }
 
-    public void setUsersLeft(int amount) {
+    public void setUsersLeft(Integer amount) {
         this.usersLeft = amount;
     }
 
