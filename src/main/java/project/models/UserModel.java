@@ -105,7 +105,7 @@ public class UserModel {
                 rs.getString("email"),
                 rs.getString("login"),
                 rs.getInt("score"),
-                rs.getLong("id"))
+                rs.getLong("id"));
     }
 
 
