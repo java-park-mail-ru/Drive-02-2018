@@ -5,15 +5,15 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import project.models.UserModel;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class UserService {
 
-    private JdbcTemplate jdbcTemplate;
 
+    private JdbcTemplate jdbcTemplate;
+  
     public UserService(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -22,6 +23,7 @@ public class UserModel {
     private Integer score;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long id;
+
 
 
     @JsonCreator
@@ -104,6 +106,7 @@ public class UserModel {
                 rs.getString("login"),
                 rs.getInt("score"),
                 rs.getLong("id"));
+                rs.getInt("score"));
     }
 
 

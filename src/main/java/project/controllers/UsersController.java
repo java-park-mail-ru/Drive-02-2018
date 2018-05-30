@@ -1,6 +1,7 @@
 package project.controllers;
 
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -21,7 +22,9 @@ import javax.servlet.http.HttpSession;
 public class UsersController {
 
     private UserService userService;
+
     private final Logger logger = LoggerFactory.getLogger(UsersController.class);
+
 
     public UsersController(UserService userService) {
         this.userService = userService;
@@ -79,6 +82,7 @@ public class UsersController {
 
         return ResponseEntity.status(HttpStatus.OK).body(StatusCodes.returnUser("INFO", returnUser));
     }
+
 
 
     @PostMapping(value = "/edit", produces = "application/json")

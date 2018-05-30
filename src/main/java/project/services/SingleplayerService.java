@@ -24,7 +24,8 @@ public class SingleplayerService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Transactional(rollbackFor = Exception.class)
+
+   @Transactional(rollbackFor = Exception.class)
     public Integer createQuestion(QuestionModel question) {
         final String sql = "INSERT INTO questions(question, theme) VALUES (?, ?) RETURNING id";
         return jdbcTemplate.queryForObject(sql, Integer.class, question.getQuestion(), question.getTheme());
@@ -90,7 +91,7 @@ public class SingleplayerService {
     }
 
 
-    public Integer getCorrectAnswer(Integer questionId) {
+public Integer getCorrectAnswer(Integer questionId) {
         final String sql = "SELECT answer_num FROM answers WHERE question_id = ? AND correct = true";
         return jdbcTemplate.queryForObject(sql, Integer.class, questionId);
     }
