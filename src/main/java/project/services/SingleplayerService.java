@@ -24,13 +24,12 @@ public class SingleplayerService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-   @Transactional(rollbackFor = Exception.class)
     public Integer createQuestion(QuestionModel question) {
         final String sql = "INSERT INTO questions(question, theme) VALUES (?, ?) RETURNING id";
         return jdbcTemplate.queryForObject(sql, Integer.class, question.getQuestion(), question.getTheme());
     }
 
-    @Transactional(rollbackFor = Exception.class)
+
     public void createAnswer(AnswerModel answer, Integer questionId) {
         final String sql = "INSERT INTO answers(answer, question_id, correct, answer_num) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql, answer.getAnswer(), questionId, answer.getCorrect(), answer.getAnswerNum());
@@ -48,7 +47,7 @@ public class SingleplayerService {
     }
 
 
-    public List<SetModel> getSet(Integer numberOfQuestions, String theme) {
+    public ArrayList<SetModel> getSet(Integer numberOfQuestions, String theme) {
 
         final String sql =
             "SELECT q.id AS question_id, answer, question, theme, a.answer_num FROM questions q "
@@ -61,17 +60,17 @@ public class SingleplayerService {
             throw new DataAccessException("Result is emty") { };
         }
 
-        final LinkedHashMap<QuestionModel, List<AnswerModel>> questionsMap = new LinkedHashMap<>();
+        final LinkedHashMap<QuestionModel, ArrayList<AnswerModel>> questionsMap = new LinkedHashMap<>();
 
         //получили набор, в котором повторяются вопросы. Необходимо получить структуру: {вопрос:[ответы]}
         for (QuestionAndAnswer i : questionAndAnswers) {
-            final List<AnswerModel> listOfAnswers
+            final ArrayList<AnswerModel> listOfAnswers
                 = questionsMap.get(new QuestionModel(i.getQuestion(), i.getTheme(), i.getQuestionId()));
 
             if (listOfAnswers != null) {
                 listOfAnswers.add(new AnswerModel(i.getAnswerNum(),  i.getAnswer(), i.getQuestionId()));
             } else {
-                final List<AnswerModel> answers = new ArrayList<>();
+                final ArrayList<AnswerModel> answers = new ArrayList<>();
                 answers.add(new AnswerModel(i.getAnswerNum(),  i.getAnswer(), i.getQuestionId()));
                 final QuestionModel question = new QuestionModel(i.getQuestion(), i.getTheme(), i.getQuestionId());
                 questionsMap.put(question, answers);
@@ -79,7 +78,7 @@ public class SingleplayerService {
         }
 
         //у Jacksona-а не получается правильно сериализовать хэш-мапину, в отличие от List-а
-        final List<SetModel> resultSet = new ArrayList<>();
+        final ArrayList<SetModel> resultSet = new ArrayList<>();
         for (QuestionModel q : questionsMap.keySet()) {
             final  SetModel set = new SetModel(q);
             set.setAnswers(questionsMap.get(q));
@@ -90,15 +89,25 @@ public class SingleplayerService {
     }
 
 
-    public Boolean checkAnswer(Integer questionId, Integer answerNum) {
-        final String sql = "SELECT correct FROM answers WHERE question_id = ? AND answer_num = ?";
-        return jdbcTemplate.queryForObject(sql, Boolean.class, questionId, answerNum);
+public Integer getCorrectAnswer(Integer questionId) {
+        final String sql = "SELECT answer_num FROM answers WHERE question_id = ? AND correct = true";
+        return jdbcTemplate.queryForObject(sql, Integer.class, questionId);
     }
 
+
+    public Integer getCorrectNum(Integer questionId) {
+        final String sql = "SELECT answer_num FROM answers WHERE question_id = ? AND correct = true";
+        return jdbcTemplate.queryForObject(sql, Integer.class, questionId);
+    }
 
     public void clear() {
         jdbcTemplate.execute("DELETE FROM questions");
         jdbcTemplate.execute("DELETE FROM answers");
+    }
+
+    public List<String> getAllThemes() {
+        final String sql = "SELECT DISTINCT theme FROM questions";
+        return jdbcTemplate.queryForList(sql, String.class);
     }
 
 }

@@ -34,12 +34,16 @@ public class SingleplayerController {
     }
 
     @GetMapping(value = "/answer/check", produces = "application/json")
-    public ResponseEntity getSet(@RequestParam(value = "question") Integer questionId,
+    public ResponseEntity checkAnswer(@RequestParam(value = "question") Integer questionId,
                                  @RequestParam(value = "answer") Integer answerNum) {
         try {
-            final Boolean correct = singleplayerService.checkAnswer(questionId, answerNum);
-            final String answer = correct ? "{\"correct\": true}" : "{\"correct\": false}";
-            return ResponseEntity.status(HttpStatus.OK).body(answer);
+            final Integer correct = singleplayerService.getCorrectAnswer(questionId);
+            final StringBuilder str = new StringBuilder();
+            str.append(correct.equals(answerNum) ? "{\"correct\": true" : "{\"correct\": false");
+            str.append(", \"correctAnswer\": ");
+            str.append(correct.toString());
+            str.append("}");
+            return ResponseEntity.status(HttpStatus.OK).body(str.toString());
         } catch (DataAccessException e) {
             final ErrorModel error = new ErrorModel("Requset url should be like /answer/check?question=4&answer=1"
                     + " and query parameteres must be valid");

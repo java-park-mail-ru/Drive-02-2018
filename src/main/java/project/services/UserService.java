@@ -4,16 +4,16 @@ package project.services;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import project.models.UserModel;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class UserService {
 
-    //todo транзакции, чтобы бд не херить
+
     private JdbcTemplate jdbcTemplate;
-
-
+  
     public UserService(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -27,7 +27,7 @@ public class UserService {
 
     public UserModel signin(UserModel user) {
         final String sql =
-            "SELECT email, login, score FROM users WHERE email = ? AND password = crypt(?, password);";
+            "SELECT email, login, score, id FROM users WHERE email = ? AND password = crypt(?, password);";
         return jdbcTemplate.queryForObject(sql, UserModel::getUser, user.getMail(), user.getPassword());
 
     }
@@ -35,7 +35,7 @@ public class UserService {
 
     public UserModel getUserByMail(String mail) {
         final String sql =
-                "SELECT email, login, score FROM users WHERE email = ?";
+                "SELECT email, login, score, id FROM users WHERE email = ?";
         return jdbcTemplate.queryForObject(sql, UserModel::getUser, mail);
     }
 
@@ -76,7 +76,7 @@ public class UserService {
     public UserModel[] getLeaders(int startPos, int amount) {
         final String sql = "SELECT login, score FROM users ORDER BY score DESC OFFSET ? LIMIT ?";
         final List<UserModel> users =
-            jdbcTemplate.query(sql, UserModel::getUserLoginAndScore, startPos, amount);
+                jdbcTemplate.query(sql, UserModel::getUserLoginAndScore, startPos, amount);
         final UserModel[] arrayOfUsers = new UserModel[users.size()];
         return users.toArray(arrayOfUsers);
     }
@@ -86,4 +86,8 @@ public class UserService {
         return jdbcTemplate.queryForObject(sql, Integer.class, email);
     }
 
+    public void incrementScoreById(Long id) {
+        final String sql = "UPDATE users SET score = score + 1 WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
 }
