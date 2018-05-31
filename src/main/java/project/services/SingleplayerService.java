@@ -24,14 +24,12 @@ public class SingleplayerService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-
-    @Transactional(rollbackFor = Exception.class)
     public Integer createQuestion(QuestionModel question) {
         final String sql = "INSERT INTO questions(question, theme) VALUES (?, ?) RETURNING id";
         return jdbcTemplate.queryForObject(sql, Integer.class, question.getQuestion(), question.getTheme());
     }
 
-    @Transactional(rollbackFor = Exception.class)
+
     public void createAnswer(AnswerModel answer, Integer questionId) {
         final String sql = "INSERT INTO answers(answer, question_id, correct, answer_num) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql, answer.getAnswer(), questionId, answer.getCorrect(), answer.getAnswerNum());
