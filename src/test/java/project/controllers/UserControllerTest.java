@@ -13,10 +13,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import project.models.UserModel;
 
-import javax.servlet.http.HttpSession;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -68,5 +66,65 @@ public class UserControllerTest {
         usersController.authorize(user, session);
         usersController.logout(session);
         assertTrue(session.isInvalid());
+    }
+
+
+    @Test
+    @DisplayName("Get user")
+    public void getUser() {
+        usersController.register(user, session);
+        usersController.authorize(user, session);
+        assertEquals(HttpStatus.OK, usersController.getUser(session).getStatusCode());
+    }
+
+    @Test
+    @DisplayName("Get user when unauthorised")
+    public void getUserWhenUnauthorised() {
+        assertEquals(HttpStatus.METHOD_NOT_ALLOWED, usersController.getUser(session).getStatusCode());
+    }
+
+    @Test
+    @DisplayName("Get leaders")
+    public void getLeaders() {
+        final ResponseEntity response = usersController.loadLeaders(0, 10);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    @DisplayName("Edit user")
+    public void editUser() {
+        usersController.register(user, session);
+        usersController.authorize(user, session);
+        user.setLogin(user.getLogin() + 1);
+        final ResponseEntity response = usersController.changeUserInfo(user, session);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    @DisplayName("Try edit user when unauthorised")
+    public void editUserUnauthorised() {
+        usersController.register(user, session);
+        usersController.logout(session);
+
+        final MockHttpSession newSession = new MockHttpSession();
+        user.setLogin(user.getLogin() + 1);
+        final ResponseEntity response = usersController.changeUserInfo(user, newSession);
+        assertEquals(HttpStatus.METHOD_NOT_ALLOWED, response.getStatusCode());
+    }
+
+
+    @Test
+    @DisplayName("Try edit user mail for already existing")
+    public void editUserMail() {
+        usersController.register(user, session);
+
+        final UserModel secondUser = new UserModel("tester1@mail.ru","tester1", 0, "12345qwerty");
+        final MockHttpSession secondSession = new MockHttpSession();
+        usersController.register(secondUser, secondSession);
+
+        user.setMail("tester1@mail.ru");
+
+        final ResponseEntity response = usersController.changeUserInfo(user, session);
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
     }
 }

@@ -55,7 +55,7 @@ public class UserServiceTest {
     public void insertWithSameMail() {
         userService.create(user);
         final UserModel user2 =
-            new UserModel(user.getMail(), changeString(user.getLogin()), user.getScore(), user.getPassword());
+                new UserModel(user.getMail(), changeString(user.getLogin()), user.getScore(), user.getPassword());
         final Executable getSameUser = () -> userService.create(user2);
         assertThrows(DuplicateKeyException.class, getSameUser);
     }
@@ -65,8 +65,8 @@ public class UserServiceTest {
     public void insertWithSameLogin() {
         userService.create(user);
         final UserModel user2 =
-            new UserModel(changeString(user.getMail()), user.getLogin(), user.getScore(), user.getPassword());
-        final Executable sameLogin = () ->userService.create(user2);
+                new UserModel(changeString(user.getMail()), user.getLogin(), user.getScore(), user.getPassword());
+        final Executable sameLogin = () -> userService.create(user2);
         assertThrows(DuplicateKeyException.class, sameLogin);
     }
 
@@ -90,7 +90,7 @@ public class UserServiceTest {
     public void testSignInNonexistent() {
         final UserModel newUser = new UserModel("default", "default", 2);
         final Executable signInFunc = () -> userService.signin(newUser);
-       assertThrows(EmptyResultDataAccessException.class, signInFunc);
+        assertThrows(EmptyResultDataAccessException.class, signInFunc);
     }
 
     @Test
@@ -100,7 +100,6 @@ public class UserServiceTest {
         final String oldMail = user.getMail();
         final String newMail = changeString(user.getMail());
         final UserModel newUser = new UserModel(newMail, user.getLogin(), user.getScore());
-        System.out.println('3');
         assertEquals(newUser, userService.edit(newUser, oldMail));
     }
 
@@ -128,8 +127,8 @@ public class UserServiceTest {
     @DisplayName("Showing leaders")
     public void getLeasersTest() {
         final UserModel newUser =
-            new UserModel(changeString(user.getMail()), changeString(user.getLogin()),
-            user.getScore() + 1, changeString(user.getPassword()));
+                new UserModel(changeString(user.getMail()), changeString(user.getLogin()),
+                        user.getScore() + 1, changeString(user.getPassword()));
 
         userService.create(user);
         userService.create(newUser);
@@ -147,5 +146,40 @@ public class UserServiceTest {
             assertEquals(u.getLogin(), leaders[i].getLogin());
             i++;
         }
+    }
+
+    @Test
+    @DisplayName("Increment score by mail")
+    public void incrementScoreByMail() {
+        userService.create(user);
+        final Long userId = userService.getUserByMail(user.getMail()).getId();
+        final Integer newScore = user.getScore() + 1;
+        assertEquals(newScore, userService.incrementScoreById(userId));
+    }
+
+    @Test
+    @DisplayName("Increment score by id")
+    public void incrementScoreById() {
+        userService.create(user);
+        final Integer newScore = user.getScore() + 1;
+        assertEquals(newScore, userService.updateScore(user.getMail()));
+    }
+
+    @Test
+    @DisplayName("Increment score nonexistance user")
+    public void incrementScoreNonExistanceUser() {
+        final Executable error = () -> userService.updateScore(changeString(user.getMail()));
+        assertThrows(DataAccessException.class, error);
+    }
+
+    @Test
+    @DisplayName("Editing all user info")
+    public void editUserInfo() {
+        userService.create(user);
+        final String newPassword = changeString(user.getPassword());
+        final String newLogin = changeString(user.getLogin());
+        final String newMail = changeString(user.getMail());
+        final UserModel newUser = new UserModel(newMail, newLogin, user.getScore(), newPassword);
+        assertEquals(newUser, userService.edit(newUser, user.getMail()));
     }
 }
