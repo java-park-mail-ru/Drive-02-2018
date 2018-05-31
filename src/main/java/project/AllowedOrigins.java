@@ -9,15 +9,15 @@ public class AllowedOrigins {
 
         private String origin;
 
-        Origins(String s) {
-            this.origin = s;
+        Origins(String origin) {
+            this.origin = origin;
         }
 
         public static String[] toStringArray() {
             final String[] result = new String[Origins.values().length];
-            int j = 0;
+            int counter = 0;
             for (Origins i : values()) {
-                result[j++] = i.origin;
+                result[counter++] = i.origin;
             }
             return result;
         }
