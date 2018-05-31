@@ -1,6 +1,5 @@
 package project.mechanics.messages;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import project.mechanics.GameSession;
 import project.websockets.Message;
 
@@ -11,14 +10,12 @@ public class Start extends Message {
         this.payload = new Payload(session, id);
     }
 
-
     public static class Payload {
         private final Long userId1;
         private final Long userId2;
         private final Long userId;
         private final String opponentLogin;
 
-        @JsonCreator
         public Payload(GameSession newGame, Long userId) {
             this.userId1 = newGame.getUserId1();
             this.userId2 = newGame.getUserId2();
@@ -43,7 +40,6 @@ public class Start extends Message {
             return opponentLogin;
         }
     }
-
 
     public Payload getPayload() {
         return payload;

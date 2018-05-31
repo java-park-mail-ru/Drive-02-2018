@@ -24,7 +24,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     public void registerWebSocketHandlers(@NotNull WebSocketHandlerRegistry registry) {
         registry.addHandler(webSocketHandler, "/play-game")
                 .addInterceptors(new HttpSessionHandshakeInterceptor())
-                .setAllowedOrigins("*");
+                .setAllowedOrigins(AllowedOrigins.Origins.toStringArray());
     }
 
 }

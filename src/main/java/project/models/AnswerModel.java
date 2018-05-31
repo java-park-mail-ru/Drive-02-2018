@@ -12,14 +12,14 @@ public class AnswerModel {
     private Integer answerNum;
     private Integer questionId;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Boolean correct;
+    private boolean correct;
     private String answer;
 
     @JsonCreator
     public AnswerModel(@JsonProperty("answerNum") Integer answerNum,
                        @JsonProperty("answer") String answer,
                        @JsonProperty("questionId") Integer questionId,
-                       @JsonProperty("correct") Boolean correct) {
+                       @JsonProperty("correct") boolean correct) {
         this.answerNum = answerNum;
         this.answer = answer;
         this.questionId = questionId;

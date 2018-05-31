@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -19,17 +18,15 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(GameWebSocketHandler.class);
     @NotNull
     private final RemotePointService service;
-    @Autowired
     private final ObjectMapper objectMapper;
 
 
-    public GameWebSocketHandler(@NotNull RemotePointService service, ObjectMapper objectMapper) {
+    public GameWebSocketHandler(@NotNull RemotePointService service, @NotNull ObjectMapper objectMapper) {
         this.service = service;
         this.objectMapper = objectMapper;
     }
 
 
-    @SuppressWarnings("OverlyBroadThrowsClause")
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         final String userMail = (String) session.getAttributes().get("mail");

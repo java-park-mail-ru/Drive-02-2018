@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import project.models.UserModel;
 
-@SuppressWarnings("unused")
-public class Message {
+
+public class TemplateMessage {
 
     @JsonProperty
     private boolean success;
@@ -26,17 +26,17 @@ public class Message {
     private Integer usersLeft;
 
 
-    public Message() {
+    public TemplateMessage() {
         success = false;
         status = "undefined";
     }
 
-    public Message(boolean success, String status) {
+    public TemplateMessage(boolean success, String status) {
         this.success = success;
         this.status = status;
     }
 
-    public Message(boolean success, String status, UserModel user) {
+    public TemplateMessage(boolean success, String status, UserModel user) {
         this.success = success;
         this.status = status;
         this.user = user;

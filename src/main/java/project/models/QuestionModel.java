@@ -11,14 +11,14 @@ import java.sql.SQLException;
 public class QuestionModel {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Integer id;
+    private int id;
     private String question;
     private String theme;
 
     @JsonCreator
     public QuestionModel(@JsonProperty("question") String question,
                          @JsonProperty("theme") String theme,
-                         @JsonProperty("id") Integer id) {
+                         @JsonProperty("id") int id) {
         this.question = question;
         this.theme = theme;
         this.id = id;
@@ -62,12 +62,12 @@ public class QuestionModel {
         }
 
         final QuestionModel rhs = (QuestionModel) object;
-        return this.id.equals(rhs.getId());
+        return this.id == rhs.getId();
     }
 
     @Override
     public int hashCode() {
-        return this.id.hashCode();
+        return this.id;
     }
 
 

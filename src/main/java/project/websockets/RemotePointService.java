@@ -23,10 +23,8 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
-import static java.util.Collections.singletonMap;
 
 
-@SuppressWarnings("OverlyBroadThrowsClause")
 @Service
 public class RemotePointService {
     private final Logger logger = LoggerFactory.getLogger(RemotePointService.class);
@@ -52,7 +50,7 @@ public class RemotePointService {
     }
 
 
-    public void registerUser(String mail, @NotNull WebSocketSession webSocketSession) throws IOException {
+    public void registerUser(String mail, @NotNull WebSocketSession webSocketSession) {
         final UserModel user = this.userService.getUserByMail(mail);
         this.userMailIdMap.put(mail, user.getId());
         logger.info("User with mail " + user.getMail() + " and id " + user.getId() + " connected");
@@ -60,7 +58,7 @@ public class RemotePointService {
     }
 
 
-    public void handleGameMessage(Message message, String userMail) throws IOException {
+    public void handleGameMessage(Message message, String userMail) {
         final Long userId = userMailIdMap.get(userMail);
         final GameSession gameSession = gameMap.get(userId);
         if (message.getClass() == ThemeSelected.class) {
@@ -88,18 +86,21 @@ public class RemotePointService {
     }
 
 
-    public void sendMessageToUser(Long userId, @NotNull Message message) throws IOException {
+    public void sendMessageToUser(Long userId, @NotNull Message message) {
         final WebSocketSession webSocketSession = sessions.get(userId);
-        if (webSocketSession == null) {
-            throw new IOException("No game websocket for user " + userId);
-        }
-        if (!webSocketSession.isOpen()) {
-            throw new IOException("Session is closed or not exsists ");
+        if (webSocketSession == null || !webSocketSession.isOpen()) {
+            throw new NullPointerException("Can't use WebSocketSession for user: " + userId);
         }
         try {
-            webSocketSession.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
-        } catch (Exception ex) {
-            throw new IOException("Unable to send message", ex);
+            final TextMessage messageToSend;
+            try {
+                messageToSend = new TextMessage(objectMapper.writeValueAsString(message));
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("Parsing error ", e);
+            }
+            webSocketSession.sendMessage(messageToSend);
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to send message ", e);
         }
     }
 
@@ -120,21 +121,10 @@ public class RemotePointService {
             gameMap.put(userId1, gameSession);
             gameMap.put(userId2, gameSession);
             gameSession.start();
-            try {
-                this.sendMessageToUser(userId1, new Start(gameSession, userId1));
-                this.sendMessageToUser(userId2, new Start(gameSession, userId2));
-            } catch (IOException e) {
-                logger.error(e.getMessage());
-            }
+            this.sendMessageToUser(userId1, new Start(gameSession, userId1));
+            this.sendMessageToUser(userId2, new Start(gameSession, userId2));
         } else {
-            try {
-                final TextMessage mesageToAnswer = new TextMessage(objectMapper.writeValueAsString(
-                                singletonMap("message", "waiting for new users")
-                 ));
-                MessageSender.send(sessions.get(userId), mesageToAnswer);
-            } catch (JsonProcessingException e) {
-                //такого быть не может
-            }
+            this.sendMessageToUser(userId, new WaitingMessage());
         }
     }
 

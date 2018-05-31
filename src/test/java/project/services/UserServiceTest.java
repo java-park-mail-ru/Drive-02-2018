@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @Transactional
 public class UserServiceTest {
     @Autowired
@@ -100,6 +100,7 @@ public class UserServiceTest {
         final String oldMail = user.getMail();
         final String newMail = changeString(user.getMail());
         final UserModel newUser = new UserModel(newMail, user.getLogin(), user.getScore());
+        System.out.println('3');
         assertEquals(newUser, userService.edit(newUser, oldMail));
     }
 

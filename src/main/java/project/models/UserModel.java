@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-@SuppressWarnings("unused")
 public class UserModel {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)

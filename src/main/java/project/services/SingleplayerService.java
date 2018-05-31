@@ -25,7 +25,7 @@ public class SingleplayerService {
     }
 
 
-   @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public Integer createQuestion(QuestionModel question) {
         final String sql = "INSERT INTO questions(question, theme) VALUES (?, ?) RETURNING id";
         return jdbcTemplate.queryForObject(sql, Integer.class, question.getQuestion(), question.getTheme());
